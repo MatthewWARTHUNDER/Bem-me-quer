@@ -1,0 +1,16 @@
+
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+@theme {
+    --color-NavbarEfooter: #A4B396;
+    --color-laranja: #E19B24;
+    --color-fundo: #e8e2d9;
+    --color-laranjaforte: #E0810E;
+    --color-cinza: #b5beba;
+    --color-dourado: #a37a10;
+    --color-black: #222222;
+}
+
+
