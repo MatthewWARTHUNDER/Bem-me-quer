@@ -1,4 +1,4 @@
-import FloresNobres from "../assets/FloresNobres.jpg";
+import FloresNobres from "../assets/FloresNobres.jpg"
 import Hearts from "../assets/Hearts.jpg";
 import Maternidade from "../assets/Maternidade.jpg";
 
@@ -6,19 +6,19 @@ import React, { useState, useEffect } from 'react';
 
 const images = [
     {
-        src: FloresNobres,
+        src: FloresNobres, 
         title: 'Flores para todas as ocasiões',
         description: 'Escolha o presente perfeito',
         button: 'Ver produtos'
     },
     {
-        src: Hearts,
+        src: Hearts, 
         title: 'Descubra benefícios',
         description: 'Presentes com chocolates e muito amor',
         button: 'Ver produtos'
     },
     {
-        src: Maternidade,
+        src: Maternidade, 
         title: 'Entrega rápida e com carinho',
         description: 'Enviamos para todo passo fundo!',
         button: 'Ver produtos'

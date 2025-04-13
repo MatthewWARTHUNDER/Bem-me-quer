@@ -2,14 +2,17 @@ import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Carousel from './components/Carousel'
-
+import Location from './components/Location'
+import InstagramSection from './components/InstagramSection'
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
       <Navbar/>
       <Carousel/>
+      <InstagramSection/>
+      <Location/>
       <Footer/>
     </>
   )

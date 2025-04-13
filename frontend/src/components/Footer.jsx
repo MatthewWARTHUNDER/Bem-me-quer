@@ -1,4 +1,4 @@
-
+import logo from "../assets/logo.png";
 import React from 'react';
 
 const Footer = () => {
@@ -9,30 +9,22 @@ const Footer = () => {
                     <div className="mb-6 md:mb-0">
                         <a href="" className="flex items-center">
                             <img
-                                src=""
-                                className="h-8 me-3"
-                                alt="Bem me quer logo"
+                                src={logo} alt="Logo da empresa" className="h-28"
                             />
-                            <span className="self-center text-2xl font-semibold text-black font-semibold">
+                            <span className="self-center text-2xl text-black font-semibold">
                                 Bem-me-quer
                             </span>
                         </a>
                     </div>
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                         <div>
-                            <h2 className="mb-6 text-sm font-semibold  uppercase text-black ">
+                            <h2 className="mb-6 text-sm font-semibold uppercase text-black ">
                                 Entre em contato
                             </h2>
                             <ul className="text-white hover:text-gray-200 delay-150 font-medium">
-                                
                                 <li>
-                                    <a href="" className=" text-black hover:text-dourado transition-colors duration-150">
-                                        Email: BemMequer@gmail.com
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="" className="text-black hover:text-dourado transition-colors duration-150">
-                                        whatssap: +54 9 9917-9427
+                                    <a href="https://wa.me/549999179427" className="text-black hover:text-dourado transition-colors duration-150">
+                                        WhatsApp
                                     </a>
                                 </li>
                             </ul>
@@ -41,18 +33,13 @@ const Footer = () => {
                             <h2 className="mb-6 text-sm font-semibold uppercase text-black">
                                 Nossas mídias sociais
                             </h2>
-                            <ul className=" font-medium">
+                            <ul className="font-medium">
                                 <li className="mb-4 text-white hover:text-gray-200 delay-150 font-medium">
                                     <a
-                                        href=""
+                                        href="https://www.instagram.com/bem_me_quer_floresepresentes/?igsh=dmJnbTlucGN2ZW40#"
                                         className="text-black hover:text-dourado transition-colors duration-150"
                                     >
                                         Instagram
-                                    </a>
-                                </li>
-                                <li className="mb-4 text-white hover:text-gray-200 delay-150 font-medium">
-                                    <a href="" className="text-black hover:text-dourado transition-colors duration-150">
-                                        Tiktok
                                     </a>
                                 </li>
                             </ul>
@@ -70,7 +57,7 @@ const Footer = () => {
                         </a>
                         . Todos direitos reservados.
                     </span>
-                    </div>
+                </div>
             </div>
         </footer>
     );
