@@ -31,13 +31,13 @@ const Carousel = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrent(prev => (prev + 1) % images.length);
-        }, 5000); // Troca a cada 5s
+        }, 5000); 
 
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="relative w-full h-[70vh] overflow-hidden">
+        <div className="relative rounded-lg mt-10 w-full h-70 overflow-hidden">
             {images.map((item, index) => (
                 <div
                     key={index}

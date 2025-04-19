@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from "react-router-dom";
 const Location = () => {
     return (
         <section id="localizacao" className="p-8 bg-white text-center">
