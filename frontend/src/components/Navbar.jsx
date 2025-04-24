@@ -2,8 +2,45 @@ import { Link } from "react-router-dom";
 import { ChevronDown } from 'lucide-react';
 import Localizacao from "../pages/Localizacao";
 import { MapPin } from 'lucide-react';
+import FloresNobres from "../assets/FloresNobres.jpg";
+import FloresVermelhas from "../assets/FloresVermelhas.jpg";
+import Hearts from "../assets/Hearts.jpg";
+import Maternidade from "../assets/Maternidade.jpg";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
+
+    const products = [
+        { id: 1, nome: "Buquê Vermelho", image: FloresVermelhas },
+            { id: 2, nome: "Flores de mesa", image: FloresNobres},
+            { id: 3, nome: "Box Rosas & Chocolate", image: Hearts},
+            { id: 4, nome: "Mimo Maternidade", image: Maternidade},
+            { id: 5, nome: "Vaso de Flores Silvestres", image: FloresVermelhas},
+            { id: 6, nome: "Flores para Ele", image: FloresNobres},
+            { id: 7, nome: "Arranjo de Agradecimento", image: Hearts},
+            { id: 8, nome: "Flores de Formatura", image: FloresVermelhas},
+            { id: 9, nome: "Bomboniere & Bebidas", image: Hearts},
+        ];
+
+        const handleSearch = (e) => {
+            if(e.key === 'Enter'){
+                e.preventDefault();
+                const filteredProducts = products.filter(product => product.nome.toLowerCase().includes(searchQuery.toLowerCase()))
+
+                navigate('/Produto', {
+                    state: { filteredProducts: filteredProducts }
+                });
+            }
+        };
+
+
+
+
+
     return (
         <>
             <div className="w-full bg-dourado py-1 text-white text-sm font-medium">
@@ -49,6 +86,16 @@ export default function Navbar() {
                     <Link to="/contato" className="text-black hover:text-dourado transition-colors duration-150">
                         Contato
                     </Link>
+
+                    <div className="relative">
+                        <input type="text" 
+                            placeholder="Pesquisar"
+                            value = {searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={handleSearch}
+                            className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado"
+                        />
+                    </div>
                 </div>
             </nav>
         </>

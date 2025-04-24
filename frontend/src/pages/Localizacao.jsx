@@ -6,7 +6,9 @@ import Navbar from "../components/Navbar";
 export default function Localizacao() {
     return (
         <>
+            <Navbar />
             <Location />
+            <Footer />
         </>
     );
 }

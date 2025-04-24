@@ -4,6 +4,9 @@ import FloresNobres from "../assets/FloresNobres.jpg";
 import FloresVermelhas from "../assets/FloresVermelhas.jpg";
 import Hearts from "../assets/Hearts.jpg";
 import Maternidade from "../assets/Maternidade.jpg";
+import FerreroRocher from "../assets/FerreroRocher.jpg";
+import MiniIce from "../assets/MiniIce.jpg";
+import RoletaRussa from "../assets/RoletaRussa.jpg";
 
 // Produtos de exemplo
 const produtos = [
@@ -15,7 +18,11 @@ const produtos = [
     { id: 6, nome: "Flores para Ele", categoria: "paraeles", preco: 130, imagem: FloresNobres },
     { id: 7, nome: "Arranjo de Agradecimento", categoria: "agradecimento", preco: 140, imagem: FloresNobres },
     { id: 8, nome: "Flores de Formatura", categoria: "formatura", preco: 160, imagem: FloresNobres },
-    { id: 9, nome: "Bomboniere & Bebidas", categoria: "bomboniere&bebibas", preco: 220, imagem: FloresNobres },
+    { id: 9, nome: "FerreroRocher avelã", categoria: "bomboniereEbebibas", preco: 24.97, imagem: FerreroRocher },
+    {id: 10, nome: "Roleta Russa", categoria: "bomboniereEbebibas", preco: 62.49, imagem: RoletaRussa}, 
+    {id: 11, nome: "Mini Ice", categoria: "bomboniereEbebibas", preco: 16.67, imagem: MiniIce }, 
+    {id: 12, nome: "Mini Ice", categoria: "bomboniereEbebibas", preco: 16.67, imagem: MiniIce }, 
+
 ];
 
 const categorias = [
@@ -28,7 +35,7 @@ const categorias = [
     { label: "Para Eles", value: "paraeles" },
     { label: "Agradecimento", value: "agradecimento" },
     { label: "Formatura", value: "formatura" },
-    { label: "Bomboniere & Bebidas", value: "bomboniere&bebibas" },
+    { label: "Bomboniere & Bebidas", value: "bomboniereEbebibas" },
 ];
 
 export default function Loja() {

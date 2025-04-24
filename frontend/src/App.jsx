@@ -6,6 +6,7 @@ import InstagramSection from './components/InstagramSection'
 import Loja from './pages/Loja'
 import Localizacao from './pages/Localizacao'
 
+
 function App() {
 
 
@@ -13,8 +14,6 @@ function App() {
     <>
       <Navbar/>
       <InstagramSection/>
-      <Localizacao/>
-      <Loja/>
       <Footer/>
     </>
   )

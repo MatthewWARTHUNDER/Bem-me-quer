@@ -3,14 +3,18 @@ import { FaInstagram } from 'react-icons/fa';
 import FloresVermelhas from '../assets/FloresVermelhas.jpg';
 import { CiHeart } from "react-icons/ci";
 import FloresNobres from '../assets/FloresNobres.jpg'
+import instagramFlor from '../assets/instagramFotos/instagramFlor.png'
+import instagramFlor2 from '../assets/instagramFotos/instagramFlor2.png'
+import instagramFlor3 from '../assets/instagramFotos/instagramFlor3.png'
+import instagramFlor4 from '../assets/instagramFotos/instagramFlor4.png'
 
 const Imageminstagram = [
-    { imagem: FloresVermelhas, link: 'https://www.instagram.com/p/DHt9SMhxQVx/,', likes: 12},
-    { imagem: FloresNobres, link: 'https://www.instagram.com/p/DHweGJtxWeU/', likes: 13},
-    { imagem: FloresVermelhas, link: '' },
-    { imagem: FloresVermelhas, link: '' },
-    { imagem: FloresVermelhas, link: '' },
-    { imagem: FloresVermelhas, link: '' },
+    { imagem: FloresVermelhas, link: 'https://www.instagram.com/p/DHt9SMhxQVx/,'},
+    { imagem: FloresNobres, link: 'https://www.instagram.com/p/DHweGJtxWeU/', },
+    { imagem: instagramFlor, link: 'https://www.instagram.com/p/DIoTdRSxAMC/' },
+    { imagem: instagramFlor2, link: 'https://www.instagram.com/p/DIb4wlMR3T5/' },
+    { imagem: instagramFlor3, link: 'https://www.instagram.com/p/DIB9_IwRS-q/' },
+    { imagem: instagramFlor4, link: 'https://www.instagram.com/p/DCo8GpBRZB4/' }
 ];
 
 const InstagramSection = () => {
