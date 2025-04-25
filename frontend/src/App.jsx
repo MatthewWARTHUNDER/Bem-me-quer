@@ -13,6 +13,7 @@ function App() {
   return (
     <>
       <Navbar/>
+      <Carousel/>
       <InstagramSection/>
       <Footer/>
     </>

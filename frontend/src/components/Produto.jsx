@@ -22,7 +22,6 @@ const produtos = [
     {id: 10, nome: "Roleta Russa", categoria: "bomboniereEbebibas", preco: 62.49, imagem: RoletaRussa}, 
     {id: 11, nome: "Mini Ice", categoria: "bomboniereEbebibas", preco: 16.67, imagem: MiniIce }, 
     {id: 12, nome: "Mini Ice", categoria: "bomboniereEbebibas", preco: 16.67, imagem: MiniIce }, 
-
 ];
 
 const categorias = [
@@ -57,7 +56,6 @@ export default function Loja() {
             <h2 className="text-3xl font-bold text-center mb-8">Nossa Loja</h2>
 
             <div className="flex gap-10">
-                {/* Sidebar de Categorias */}
                 <aside className="w-1/4">
                     <h3 className="text-lg font-semibold mb-4">Categorias</h3>
                     <ul className="space-y-2">
@@ -80,7 +78,11 @@ export default function Loja() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-3/4">
                     {produtosFiltrados.map((produto) => (
                         <div key={produto.id} className="bg-white p-4 rounded-xl shadow hover:shadow-md transition">
-                            <img src={produto.imagem} alt={produto.nome} className="w-full h-48 object-cover rounded-md mb-3" />
+                            <img 
+                                src={produto.imagem} 
+                                alt={produto.nome} 
+                                className="w-full h-48 object-cover rounded-md mb-3"
+                            />
                             <h3 className="text-xl font-semibold mb-2">{produto.nome}</h3>
                             <p className="text-gray-600 mb-2">Categoria: {produto.categoria}</p>
                             <p className="text-dourado font-bold">R$ {produto.preco.toFixed(2)}</p>

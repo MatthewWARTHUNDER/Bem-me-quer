@@ -16,26 +16,26 @@ export default function Navbar() {
 
     const products = [
         { id: 1, nome: "Buquê Vermelho", image: FloresVermelhas },
-            { id: 2, nome: "Flores de mesa", image: FloresNobres},
-            { id: 3, nome: "Box Rosas & Chocolate", image: Hearts},
-            { id: 4, nome: "Mimo Maternidade", image: Maternidade},
-            { id: 5, nome: "Vaso de Flores Silvestres", image: FloresVermelhas},
-            { id: 6, nome: "Flores para Ele", image: FloresNobres},
-            { id: 7, nome: "Arranjo de Agradecimento", image: Hearts},
-            { id: 8, nome: "Flores de Formatura", image: FloresVermelhas},
-            { id: 9, nome: "Bomboniere & Bebidas", image: Hearts},
-        ];
+        { id: 2, nome: "Flores de mesa", image: FloresNobres },
+        { id: 3, nome: "Box Rosas & Chocolate", image: Hearts },
+        { id: 4, nome: "Mimo Maternidade", image: Maternidade },
+        { id: 5, nome: "Vaso de Flores Silvestres", image: FloresVermelhas },
+        { id: 6, nome: "Flores para Ele", image: FloresNobres },
+        { id: 7, nome: "Arranjo de Agradecimento", image: Hearts },
+        { id: 8, nome: "Flores de Formatura", image: FloresVermelhas },
+        { id: 9, nome: "Bomboniere & Bebidas", image: Hearts },
+    ];
 
-        const handleSearch = (e) => {
-            if(e.key === 'Enter'){
-                e.preventDefault();
-                const filteredProducts = products.filter(product => product.nome.toLowerCase().includes(searchQuery.toLowerCase()))
+    const handleSearch = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const filteredProducts = products.filter(product => product.nome.toLowerCase().includes(searchQuery.toLowerCase()))
 
-                navigate('/Produto', {
-                    state: { filteredProducts: filteredProducts }
-                });
-            }
-        };
+            navigate('/Produto', {
+                state: { filteredProducts: filteredProducts }
+            });
+        }
+    };
 
 
 
@@ -63,20 +63,19 @@ export default function Navbar() {
                         </button>
 
                         <div className="absolute top-full left-0 z-10 hidden group-hover:block bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 duration-200">
-                            <ul className="py-2 text-sm text-gray-700">
-                                <li><Link to="/150reais" className="block px-4 py-2 hover:bg-gray-100">Até 150,00</Link></li>
-                                <li><Link to="/250reais" className="block px-4 py-2 hover:bg-gray-100">Até 250,00</Link></li>
-                                <li><Link to="/arranjomesas" className="block px-4 py-2 hover:bg-gray-100">Arranjos de mesa</Link></li>
-                                <li><Link to="/buque" className="block px-4 py-2 hover:bg-gray-100">Buquê de flores</Link></li>
-                                <li><Link to="/vasos" className="block px-4 py-2 hover:bg-gray-100">Flores em vasos</Link></li>
-                                <li><Link to="/box" className="block px-4 py-2 hover:bg-gray-100">Box de flores</Link></li>
-                                <li><Link to="/aniversario" className="block px-4 py-2 hover:bg-gray-100">Aniversário</Link></li>
-                                <li><Link to="/maternidade" className="block px-4 py-2 hover:bg-gray-100">Maternidade</Link></li>
-                                <li><Link to="/paraeles" className="block px-4 py-2 hover:bg-gray-100">Para Eles</Link></li>
-                                <li><Link to="/agradecimento" className="block px-4 py-2 hover:bg-gray-100">Agradecimento</Link></li>
-                                <li><Link to="/formatura" className="block px-4 py-2 hover:bg-gray-100">Formatura</Link></li>
-                                <li><Link to="/bomboniere&bebibas" className="block px-4 py-2 hover:bg-gray-100">Bomboniere/bebidas</Link></li>
-                            </ul>
+                                <ul className="py-2 text-sm text-gray-700">
+                                    <li><Link to="/Loja" className="block px-4 py-2 hover:bg-gray-100">Todos</Link></li>
+                                    <li><Link to="/Loja?categoria=arranjomesas" className="block px-4 py-2 hover:bg-gray-100">Arranjos de mesa</Link></li>
+                                    <li><Link to="/Loja?categoria=buque" className="block px-4 py-2 hover:bg-gray-100">Buquê de flores</Link></li>
+                                    <li><Link to="/Loja?categoria=vasos" className="block px-4 py-2 hover:bg-gray-100">Flores em vasos</Link></li>
+                                    <li><Link to="/Loja?categoria=box" className="block px-4 py-2 hover:bg-gray-100">Box de flores</Link></li>
+                                    <li><Link to="/Loja?categoria=maternidade" className="block px-4 py-2 hover:bg-gray-100">Maternidade</Link></li>
+                                    <li><Link to="/Loja?categoria=paraeles" className="block px-4 py-2 hover:bg-gray-100">Para Eles</Link></li>
+                                    <li><Link to="/Loja?categoria=agradecimento" className="block px-4 py-2 hover:bg-gray-100">Agradecimento</Link></li>
+                                    <li><Link to="/Loja?categoria=formatura" className="block px-4 py-2 hover:bg-gray-100">Formatura</Link></li>
+                                    <li><Link to="/Loja?categoria=bomboniereEbebibas" className="block px-4 py-2 hover:bg-gray-100">Bomboniere/bebidas</Link></li>
+                                </ul>
+
                         </div>
                     </div>
 
@@ -88,9 +87,9 @@ export default function Navbar() {
                     </Link>
 
                     <div className="relative">
-                        <input type="text" 
+                        <input type="text"
                             placeholder="Pesquisar"
-                            value = {searchQuery}
+                            value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={handleSearch}
                             className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado"
