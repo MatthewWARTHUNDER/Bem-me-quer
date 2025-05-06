@@ -1,7 +1,8 @@
-import React from 'react';
-import { Link } from "react-router-dom";
-const Location = () => {
-    return (
+
+
+export default function Mapa(){
+    return(
+        <>
         <section id="localizacao" className="p-8 bg-white text-center">
             <h2 className="text-2xl font-bold mb-4">Nossa Localização</h2>
             <p className="mb-4">Venha nos visitar! Estamos aqui:</p>
@@ -18,7 +19,6 @@ const Location = () => {
                 ></iframe>
             </div>
         </section>
-    );
-};
-
-export default Location;
+        </>
+    )
+}

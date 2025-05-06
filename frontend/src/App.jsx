@@ -1,10 +1,10 @@
-import { useState } from 'react'
+
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Carousel from './components/Carousel'
 import InstagramSection from './components/InstagramSection'
-import Loja from './pages/Loja'
-import Localizacao from './pages/Localizacao'
+import SectionLoja from './components/SectionLoja'
+
 
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
     <>
       <Navbar/>
       <Carousel/>
+      <SectionLoja/>
       <InstagramSection/>
       <Footer/>
     </>
