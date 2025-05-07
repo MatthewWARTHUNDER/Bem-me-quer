@@ -63,7 +63,7 @@ export default function Loja() {
                         <Link to={`/produto/${produto.id}`} key={produto.id}>
                             <div className="bg-white p-4 rounded-xl shadow hover:shadow-md transition cursor-pointer">
                                 <img
-                                    src={`http://localhost:3000/imagens/${produto.imagem}`}
+                                    src={`http://localhost:5173/images/${produto.imagem}`}
                                     alt={produto.nome}
                                     className="w-full h-48 object-cover rounded-md mb-3"
                                 />

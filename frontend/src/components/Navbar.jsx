@@ -14,7 +14,7 @@ export default function Navbar() {
             e.preventDefault();
             try {
                 // Verificando a URL da API
-                const response = await axios.get(`http://localhost:3000/produtos/search?q=${searchQuery}`);
+                const response = await axios.get(`http://localhost:5173/produtos/search?q=${searchQuery}`);
 
                 // Verificando a resposta da API
                 if (response.status === 200) {

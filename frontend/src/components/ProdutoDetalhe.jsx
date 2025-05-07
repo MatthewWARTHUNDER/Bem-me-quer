@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+
 export default function ProdutoDetalhe() {
     const { id } = useParams();
     const [produto, setProduto] = useState(null);
@@ -19,7 +20,7 @@ export default function ProdutoDetalhe() {
             });
     }, [id]);
 
-    // 🔽 Aqui está a função que salva o produto no localStorage
+
     function adicionarAoCarrinho(produto) {
         const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
 
@@ -39,7 +40,7 @@ export default function ProdutoDetalhe() {
     return (
         <section className="min-h-screen px-6 py-10 bg-gray-50">
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
-                <img src={`/imagens/${produto.imagem}`} alt={produto.nome} className="w-full h-80 object-cover rounded-md mb-4" />
+                <img src={`/images/${produto.imagem}`} alt={produto.nome} className="w-full h-80 object-cover rounded-md mb-4" />
                 <h1 className="text-3xl font-bold mb-2">{produto.nome}</h1>
                 <p className="text-gray-700 mb-4">{produto.descricao}</p>
                 <p className="text-gray-700 mb-4">Categoria: {produto.categoria}</p>

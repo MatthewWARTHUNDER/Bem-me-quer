@@ -7,6 +7,7 @@ import Localizacao from './pages/Localizacao.jsx';
 import Produto from './pages/Produto.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Carrinho from './pages/Carrinho.jsx';
+import Sobre from './pages/Sobre.jsx';
 
 
 const router = createBrowserRouter([
@@ -32,7 +33,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/Carrinho',
-    element: <Carrinho/>
+    element: <Carrinho />
+  },
+  {
+    path: '/Sobre',
+    element: <Sobre />
   }
 ]);
 
