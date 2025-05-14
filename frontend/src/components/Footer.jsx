@@ -3,7 +3,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="bg-NavbarEfooter">
+        <footer className="bg-NavbarEfooter ">
             <div className="w-full max-w-screen-xl mx-auto p-4 py-6 lg:py-8">
                 <div className="flex flex-col md:flex-row md:justify-between gap-6">
                     <div className="flex flex-col items-center md:items-start">

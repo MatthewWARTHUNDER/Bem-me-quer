@@ -8,33 +8,21 @@ export default function Navbar() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const [carrinhoState, setCarrinhoState] = useState(0);
+
+    React.useEffect(() => {
+        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        setCarrinhoState(carrinho.length);
+    })
 
     const handleSearch = async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            try {
-                // Verificando a URL da API
-                const response = await axios.get(`http://localhost:5173/produtos/search?q=${searchQuery}`);
-
-                // Verificando a resposta da API
-                if (response.status === 200) {
-                    const filteredProducts = response.data;
-                    console.log(filteredProducts);  // Verifique se os produtos são retornados corretamente
-
-                    // Se não encontrar nenhum produto, podemos alertar
-                    if (filteredProducts.length === 0) {
-                        alert('Nenhum produto encontrado!');
-                    } else {
-                        // Navegando para a página de produtos com os dados filtrados
-                        navigate('/Produto', { state: { filteredProducts } });
-                    }
-                } else {
-                    alert('Erro ao buscar produtos, tente novamente!');
-                }
-            } catch (error) {
-                console.error('Erro ao fazer a requisição de busca:', error);
-                alert('Houve um erro ao tentar buscar os produtos. Por favor, tente novamente.');
+            if (searchQuery.trim() === '') {
+                alert('Digite algo para pesquisar.');
+                return;
             }
+            navigate(`/ProdutoPesquisa?busca=${encodeURIComponent(searchQuery)}`);
         }
     };
 
@@ -71,12 +59,17 @@ export default function Navbar() {
                                     <li><Link to="/Loja" className="block px-4 py-2 hover:bg-gray-100">Todos</Link></li>
                                     <li><Link to="/Loja?categoria=arranjomesas" className="block px-4 py-2 hover:bg-gray-100">Arranjos de mesa</Link></li>
                                     <li><Link to="/Loja?categoria=buque" className="block px-4 py-2 hover:bg-gray-100">Buquê de flores</Link></li>
+                                    <li><Link to="/Loja?categoria=vasos" className="block px-4 py-2 hover:bg-gray-100">Flores em vasos</Link></li>
+                                    <li><Link to="/Loja?categoria=paraeles" className="block px-4 py-2 hover:bg-gray-100">Para eles</Link></li>
+                                    <li><Link to="/Loja?categoria=agradecimento" className="block px-4 py-2 hover:bg-gray-100">Agradecimento</Link></li>
+                                    <li><Link to="/Loja?categoria=formatura" className="block px-4 py-2 hover:bg-gray-100">Formaturas</Link></li>
+                                    
                                 </ul>
                             </div>
                         </div>
 
                         <Link to="/Sobre" className="text-black hover:text-dourado transition-colors duration-150">Sobre</Link>
-                        <Link to="/contato" className="text-black hover:text-dourado transition-colors duration-150">Contato</Link>
+                        <Link to="/localizacao" className="text-black hover:text-dourado transition-colors duration-150">Localização</Link>
 
                         <input
                             type="text"
@@ -87,31 +80,48 @@ export default function Navbar() {
                             className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado"
                         />
 
-                        <Link to="/Carrinho" className="text-black hover:text-dourado"><ShoppingCart size={24} /></Link>
+                        <Link to="/Carrinho" className="relative text-black hover:text-dourado">
+                            <ShoppingCart size={24} />
+                            {carrinhoState > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-dourado text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                    {carrinhoState}
+                                </span>
+                            )}
+                        </Link>
                     </div>
                 </div>
 
                 {/* Menu Mobile */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden mt-4 flex flex-col gap-4 text-black">
+                    <div className="md:hidden mt-4 flex flex-col gap-4  text-black">
                         <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
                         <Link to="/Loja" onClick={() => setIsMobileMenuOpen(false)}>Categorias</Link>
                         <Link to="/Sobre" onClick={() => setIsMobileMenuOpen(false)}>Sobre</Link>
-                        <Link to="/contato" onClick={() => setIsMobileMenuOpen(false)}>Contato</Link>
+                        <Link to="/Localizacao" onClick={() => setIsMobileMenuOpen(false)}>Localização</Link>
+                        <Link to="/Carrinho" className="relative text-black hover:text-dourado ">
+                            <ShoppingCart size={24} />
+                            {carrinhoState > 0 && (
+                                <span className="absolute -top-2 start-4 bg-dourado text-white text-xs w-5 h-5 flex items-center justify-center rounded-full space-x-3">
+                                    {carrinhoState}
+                                </span>
+
+                            )}
+                        </Link>
+
+
                         <input
                             type="text"
                             placeholder="Pesquisar"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyPress={handleSearch}
-                            className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado"
+                            className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado space-x-4 "
                         />
-                        <Link to="/Carrinho" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                            <ShoppingCart size={20} /> Meu carrinho
-                        </Link>
+
+
                     </div>
                 )}
-            </nav>
+            </nav >
         </>
     );
 }

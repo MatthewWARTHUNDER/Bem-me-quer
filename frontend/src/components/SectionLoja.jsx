@@ -32,7 +32,7 @@ export default function SectionLoja() {
                             Que tal dar uma olhada em nossa loja virtual?
                         </p>
                         <Link to="/Loja" className="cursor-pointer">
-                            <button className="bg-dourado text-white px-4 py-2 rounded mt-4 cursor-pointer hover-40">
+                            <button className="bg-dourado text-white hover:bg-yellow-500  px-4 py-2 rounded mt-4 cursor-pointer hover-40">
                                 Ir para a loja
                             </button>
                         </Link>

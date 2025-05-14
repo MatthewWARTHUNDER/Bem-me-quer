@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Cart() {
     const [carrinho, setCarrinho] = useState([]);
+    const [mensagem, setMensagem] = useState("");
 
     useEffect(() => {
 
@@ -15,6 +16,7 @@ export default function Cart() {
         const novosProdutos = carrinho.filter(produto => produto.id !== id);
         setCarrinho(novosProdutos);
         localStorage.setItem('carrinho', JSON.stringify(novosProdutos));
+        mostrarMensagem("Produto removido do carrinho!")
     };
 
     const calcularTotal = () => {
@@ -24,8 +26,26 @@ export default function Cart() {
         return total.toFixed(2);
     };
 
+    const mostrarMensagem = (mensagem) => {
+        setMensagem(mensagem);
+        setTimeout(() => {
+            setMensagem("");
+        }, 3000);
+    }
+
+
+
     return (
         <section className="min-h-screen px-6 py-10 bg-gray-50">
+
+            {mensagem && (
+                <div className="fixed top-30 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-opacity duration-300">
+
+                    {mensagem}
+                </div>
+
+            )}
+
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
                 <h1 className="text-3xl font-bold mb-6">Carrinho de Compras</h1>
 
@@ -57,7 +77,7 @@ export default function Cart() {
 
                         <div className="mt-6 flex justify-between items-center">
                             <span className="text-xl font-semibold">Total: R$ {calcularTotal()}</span>
-                            <button className="bg-dourado text-white px-6 py-3 rounded-md hover:bg-dourado-dark focus:outline-none cursor-pointer">
+                            <button className="bg-dourado text-white hover:bg-yellow-500  px-6 py-3 rounded-md hover:bg-dourado-dark focus:outline-none cursor-pointer">
                                 Finalizar Compra
                             </button>
                         </div>

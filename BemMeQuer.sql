@@ -15,7 +15,7 @@ INSERT INTO  produtos (nome, descricao, preco, imagem, categoria) VALUES(
  'Buquê de Rosas Vermelhas',
   'Buquê com 12 rosas vermelhas frescas, envolvidas em papel kraft com laço de cetim vermelho.',
   89.90,
-  'buque-rosas.jpg',
+  'FloresVermelhas.jpg',
   'buque'
 );
 
@@ -51,6 +51,9 @@ VALUES (
 
 SELECT * FROM produtos;
 SELECT * FROM produtos WHERE id = 1 ;
+
+
+UPDATE produtos SET imagem = 'FloresVermelhas.jpg' WHERE id = 1;
 
 DROP TABLE produtos;
 

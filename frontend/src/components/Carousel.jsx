@@ -60,7 +60,7 @@ const Carousel = () => {
                         </h2>
                         <p className="text-lg md:text-xl mb-6 drop-shadow">{item.description}</p>
                         <Link to="/Loja">
-                            <button className="bg-white text-black font-semibold px-6 py-3 rounded hover:bg-dourado transition">
+                            <button className="bg-dourado text-white font-semibold px-6 py-3 rounded hover:bg-yellow-500  transition cursor-pointer"> 
                                 {item.button}
                             </button>
                         </Link>
@@ -69,7 +69,7 @@ const Carousel = () => {
             ))}
 
             {/* Bolinhas de navegação */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
                 {images.map((_, index) => (
                     <button
                         key={index}

@@ -8,6 +8,8 @@ import Produto from './pages/Produto.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Carrinho from './pages/Carrinho.jsx';
 import Sobre from './pages/Sobre.jsx';
+import Produtopesquisa from './pages/Produtopesquisa.jsx';
+import Privacidade from './pages/Privacidade.jsx';
 
 
 const router = createBrowserRouter([
@@ -24,12 +26,8 @@ const router = createBrowserRouter([
     element: <Localizacao />,
   },
   {
-    path: '/',
-    element: <Loja />,
-  },
-  {
     path: '/Produto/:id',
-    element: <Produto/>,
+    element: <Produto />,
   },
   {
     path: '/Carrinho',
@@ -38,6 +36,14 @@ const router = createBrowserRouter([
   {
     path: '/Sobre',
     element: <Sobre />
+  },
+  {
+    path: '/ProdutoPesquisa',
+    element: <Produtopesquisa />
+  },
+  {
+    path: '/Privacidade',
+    element: <Privacidade />
   }
 ]);
 
