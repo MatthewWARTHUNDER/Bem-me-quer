@@ -10,6 +10,7 @@ import Carrinho from './pages/Carrinho.jsx';
 import Sobre from './pages/Sobre.jsx';
 import Produtopesquisa from './pages/Produtopesquisa.jsx';
 import Privacidade from './pages/Privacidade.jsx';
+import Checkoutpage from './pages/Checkoutpage.jsx';
 
 
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: '/Privacidade',
     element: <Privacidade />
+  },
+  {
+    path: '/Checkoutpage',
+    element: <Checkoutpage />
   }
 ]);
 
