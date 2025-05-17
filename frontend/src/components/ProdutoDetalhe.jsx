@@ -68,6 +68,7 @@ export default function ProdutoDetalhe() {
                         <h1 className="text-2xl font-semibold mb-1">{produto.nome}</h1>
                         <p className="text-gray-700 mb-2">{produto.descricao}</p>
                         <p className="text-gray-600 mb-2">Categoria: {produto.categoria}</p>
+                        <p className="text-gray-600 mb-2 font-black">Estoque disponível: {produto.estoque}</p>
                         <p className="text-dourado text-xl font-bold mb-4">
                             R$ {Number(produto.preco).toFixed(2)}
                         </p>

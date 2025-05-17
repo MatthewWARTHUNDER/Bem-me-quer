@@ -13,6 +13,7 @@ export default function Checkout() {
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
     const [telefone, setTelefone] = useState('');
+    const [dataEntrega, setDataEntrega] = useState(''); 
 
     useEffect(() => {
         const produtosCarrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -25,9 +26,7 @@ export default function Checkout() {
         }, 0).toFixed(2);
     };
 
-    // Função para enviar o pedido para o backend
     const enviarPedido = async () => {
-        // Montar array de produtos no formato esperado pelo backend
         const produtosPedido = carrinho.map(produto => ({
             produto_id: produto.id,
             nome_produto: produto.nome,
@@ -42,6 +41,7 @@ export default function Checkout() {
             endereco: `${endereco} ${complemento}`.trim(),
             cidade,
             estado,
+            data_entrega: dataEntrega, 
             total: Number(calcularTotal()),
             produtos: produtosPedido
         };
@@ -64,11 +64,8 @@ export default function Checkout() {
             const dados = await resposta.json();
             alert(`Pedido enviado com sucesso! ID do pedido: ${dados.pedidoId}`);
 
-            // Aqui você pode limpar o carrinho e redirecionar para a página de pagamento Mercado Pago
             localStorage.removeItem('carrinho');
             setCarrinho([]);
-
-            // TODO: Redirecionar para Mercado Pago (a gente pode integrar depois)
 
         } catch (error) {
             alert('Erro na conexão com o servidor: ' + error.message);
@@ -152,6 +149,15 @@ export default function Checkout() {
                                 onChange={e => setEstado(e.target.value)}
                             />
                         </div>
+
+                        {/* 📅 Campo de data */}
+                        <input
+                            type="date"
+                            className="w-full border p-3 mt-2 rounded-md"
+                            value={dataEntrega}
+                            onChange={e => setDataEntrega(e.target.value)}
+                        />
+
                         <input
                             type="tel"
                             placeholder="Telefone"

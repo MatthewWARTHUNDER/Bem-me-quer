@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 export default function Cart() {
     const [carrinho, setCarrinho] = useState([]);
     const [mensagem, setMensagem] = useState("");
+    const [dataEntrega, setDataEntrega] = useState("");
+
 
     useEffect(() => {
         const produtosCarrinho = JSON.parse(localStorage.getItem('carrinho')) || [];

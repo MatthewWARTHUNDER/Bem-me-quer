@@ -1,14 +1,54 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+const bcrypt = require('bcrypt');
 
+const senha = "admin123";
+const saltRounds = 10;
 const app = express();
+
+// const para armazenar a senha do admin e o seu nome
+const NewAdmin = {
+    nome: "Franciele",
+    senha: "Pastel 10"
+
+};
 
 app.use(express.json());
 app.use(cors());
 
 
-// Função para pegar o produto
+
+// const para criptografar a senha do admin ao banco de dados
+const senhaCriptografada = bcrypt.hashSync(NewAdmin.senha, 10);
+
+
+
+// Processor para gerar o hash(criptografar) a senha do admin
+bcrypt.hash(senha, saltRounds, (err, hash) => {
+    if (err){
+        console.eror("erro ao gerar o hash:", err)
+    } else {
+        console.log("Hash gerado com sucesso:", hash)
+    }
+});
+
+// Depois de gerar o hash, insere o admin ao banco de dados
+db.query(
+    "INSERT INTO admins (nome, senha_hash) VALUES (?, ?)",
+    [NewAdmin.nome, senhaCriptografada],
+    (err) => {
+        if (err){
+            console.error("Erro ao inserir o admin:", err);
+
+        } else {
+            console.log("Admin inseriro com sucesso ao banco de dados!")
+        }
+    }
+)
+
+
+// Buscar todos os produtos
 app.get('/produtos', (req, res) => {
     db.query('SELECT * FROM produtos', (err, result) => {
         if (err) {
@@ -18,8 +58,7 @@ app.get('/produtos', (req, res) => {
     });
 });
 
-
-// Pegar o produto pelo seu ID
+// Buscar produto por ID
 app.get('/produtos/:id', (req, res) => {
     const { id } = req.params;
     db.query("SELECT * FROM produtos WHERE id = ?", [id], (err, results) => {
@@ -29,37 +68,39 @@ app.get('/produtos/:id', (req, res) => {
     });
 });
 
-// Função para adicionar um produto
+// Adicionar produto com estoque
 app.post('/produtos', (req, res) => {
-    db.query("INSERT INTO produtos (nome, descricao, preco, imagem, categoria) VALUES (?, ?, ?, ?, ?)", [req.body.nome, req.body.descricao, req.body.preco, req.body.imagem, req.body.categoria], (err, results) => {
-        if (err) {
-            return res.status(500).send("Erro ao adicionar o produto: " + err.message);
-        }
-        res.status(201).send('Produto adicionado com sucesso!');
-    });
-})
-
-// Função para atualizar um produto pelo seu ID
-app.put('/produtos/:id', (req, res) => {
-    const { id } = req.params;
-    const { nome, descricao, preco, imagem, categoria } = req.body;
+    const { nome, descricao, preco, imagem, categoria, estoque } = req.body;
 
     db.query(
-        "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, imagem = ?, categoria = ? WHERE id = ?",
-        [nome, descricao, preco, imagem, categoria, id],
+        "INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (?, ?, ?, ?, ?, ?)",
+        [nome, descricao, preco, imagem, categoria, estoque],
         (err, results) => {
             if (err) {
-                return res.status(500).send("Erro ao atualizar o produto:" + err.message);
+                return res.status(500).send("Erro ao adicionar o produto: " + err.message);
             }
-            if (results.affectedRows === 0) {
-                return res.status(404).send("Produto não encontrado para atualizar.");
-            }
-            res.status(200).send("Produto atualizado com sucesso!");
+            res.status(201).send('Produto adicionado com sucesso!');
         }
     );
 });
 
-// Função para deletar um produto pelo seu ID
+// Atualizar produto por ID (incluindo estoque)
+app.put('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const { estoque } = req.body;
+
+    const query = 'UPDATE produtos SET estoque = ? WHERE id = ?';
+    db.query(query, [estoque, id], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar o estoque:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar o estoque' });
+        }
+
+        return res.status(200).json({ message: 'Estoque atualizado com sucesso' });
+    });
+});
+
+// Deletar produto por ID
 app.delete('/produtos/:id', (req, res) => {
     const { id } = req.params;
 
@@ -76,7 +117,7 @@ app.delete('/produtos/:id', (req, res) => {
     });
 });
 
-// Fumção para cadastrar um pedido quando o cliente finalizar a compra
+// Criar pedido
 app.post('/pedidos', (req, res) => {
     const {
         nome_cliente,
@@ -91,9 +132,8 @@ app.post('/pedidos', (req, res) => {
     } = req.body;
 
     if (!nome_cliente || !email || !telefone || !cep || !endereco || !cidade || !estado || !total || !produtos) {
-        return res.status(400).send("Dados incompletos do pedido.");
+        return res.status(400).send("Dados incompletos do pedido, por favor preenche todos os campos!");
     }
-
 
     const sqlPedido = `INSERT INTO pedidos 
     (nome_cliente, email, telefone, cep, endereco, cidade, estado, total) 
@@ -107,9 +147,7 @@ app.post('/pedidos', (req, res) => {
 
         const pedidoId = resultPedido.insertId;
 
-
         const sqlItens = `INSERT INTO itens_pedido (pedido_id, produto_id, nome_produto, preco) VALUES ?`;
-
 
         const valoresItens = produtos.map(produto => [
             pedidoId,
@@ -129,16 +167,16 @@ app.post('/pedidos', (req, res) => {
     });
 });
 
-app.get('/pedidos/:id', (req, res) =>{
+// Buscar pedido por ID
+app.get('/pedidos/:id', (req, res) => {
     const { id } = req.params;
-    db.query('SELECT * FROM pedidos WHERE id = ?', [id] ,(err, result) => {
+    db.query('SELECT * FROM pedidos WHERE id = ?', [id], (err, result) => {
         if (err) {
-            return res.status(500).send('Erro ao buscar os pedidos' + err);
+            return res.status(500).send('Erro ao buscar os pedidos: ' + err);
         }
         res.status(200).json(result);
-    })
-})
-
+    });
+});
 
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
