@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 export default function Checkout() {
     const [carrinho, setCarrinho] = useState([]);
 
-    // Estados para o formulário
     const [email, setEmail] = useState('');
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');

@@ -7,6 +7,8 @@ import SectionLoja from './components/SectionLoja'
 import CookieConsent from './components/CookiesConsent'
 import Checkout from './components/Checkout'
 import Admin from './components/admin/Admin'
+import AdminLogin from './components/admin/AdminLogin'
+import AdminNavbar from './components/admin/AdminNavbar'
 
 
 
@@ -17,13 +19,15 @@ function App() {
   return (
     <>
 
-    {/* <Admin/> */}
-      <Navbar/>
+      <AdminNavbar />
+      <Admin/>
+      {/* <Navbar/>
       <Carousel/>
       <SectionLoja/>
       <InstagramSection/>
       <CookieConsent/>
-      <Footer/>
+      <Footer/>  */}
+      {/* <AdminLogin /> */}
     </>
   )
 }

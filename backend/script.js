@@ -26,7 +26,7 @@ const senhaCriptografada = bcrypt.hashSync(NewAdmin.senha, 10);
 
 // Processor para gerar o hash(criptografar) a senha do admin
 bcrypt.hash(senha, saltRounds, (err, hash) => {
-    if (err){
+    if (err) {
         console.eror("erro ao gerar o hash:", err)
     } else {
         console.log("Hash gerado com sucesso:", hash)
@@ -38,7 +38,7 @@ db.query(
     "INSERT INTO admins (nome, senha_hash) VALUES (?, ?)",
     [NewAdmin.nome, senhaCriptografada],
     (err) => {
-        if (err){
+        if (err) {
             console.error("Erro ao inserir o admin:", err);
 
         } else {
@@ -46,6 +46,38 @@ db.query(
         }
     }
 )
+
+
+// Rota para o login do admin
+app.post('/admin/login', (req, res) => {
+    const { nome, senha } = req.body;
+
+    db.query("SELECT * FROM admins WHERE nome = ?", [nome], (err, results) => {
+        if (err) {
+            console.error("Erro no banco:", err);
+            return res.status(500).json({ erro: "Erro no servidor." });
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json({ erro: "Admin não encontrado" });
+        }
+
+        const admin = results[0];
+
+        // Verifica a senha
+        bcrypt.compare(senha, admin.senha_hash, (err, result) => {
+            if (err) {
+                return res.status(500).json({ erro: "Erro ao verificar senha" });
+            }
+
+            if (result) {
+                return res.status(200).json({ mensagem: "Login bem-sucedido" });
+            } else {
+                return res.status(401).json({ erro: "Senha incorreta" });
+            }
+        });
+    });
+});
 
 
 // Buscar todos os produtos
@@ -68,7 +100,7 @@ app.get('/produtos/:id', (req, res) => {
     });
 });
 
-// Adicionar produto com estoque
+// Adicionar produto 
 app.post('/produtos', (req, res) => {
     const { nome, descricao, preco, imagem, categoria, estoque } = req.body;
 
@@ -87,16 +119,29 @@ app.post('/produtos', (req, res) => {
 // Atualizar produto por ID (incluindo estoque)
 app.put('/produtos/:id', (req, res) => {
     const { id } = req.params;
-    const { estoque } = req.body;
+    const campos = [];
+    const valores = [];
 
-    const query = 'UPDATE produtos SET estoque = ? WHERE id = ?';
-    db.query(query, [estoque, id], (err, result) => {
+    // monta a query apenas com os campos enviados
+    for (const [chave, valor] of Object.entries(req.body)) {
+        campos.push(`${chave} = ?`);
+        valores.push(valor);
+    }
+
+    if (campos.length === 0) {
+        return res.status(400).json({ error: 'Nenhum campo para atualizar' });
+    }
+
+    const query = `UPDATE produtos SET ${campos.join(', ')} WHERE id = ?`;
+    valores.push(id);
+
+    db.query(query, valores, (err, result) => {
         if (err) {
-            console.error('Erro ao atualizar o estoque:', err);
-            return res.status(500).json({ error: 'Erro ao atualizar o estoque' });
+            console.error('Erro ao atualizar o produto', err);
+            return res.status(500).json({ error: 'Erro ao atualizar o produto' });
         }
 
-        return res.status(200).json({ message: 'Estoque atualizado com sucesso' });
+        return res.status(200).send({ message: 'Produto atualizado com sucesso' });
     });
 });
 
@@ -166,6 +211,15 @@ app.post('/pedidos', (req, res) => {
         });
     });
 });
+
+app.get('/pedidos', (req, res) => {
+    db.query('SELECT * FROM pedidos', (err, result) => {
+        if (err) {
+            return res.status(500).send('Erro ao buscar os pedidos' + err);
+        }
+        res.status(200).json(result)
+    })
+})
 
 // Buscar pedido por ID
 app.get('/pedidos/:id', (req, res) => {

@@ -1,93 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-export default function Cart() {
-    const [carrinho, setCarrinho] = useState([]);
-    const [mensagem, setMensagem] = useState("");
-    const [dataEntrega, setDataEntrega] = useState("");
-
-
+const Checkout = () => {
     useEffect(() => {
-        const produtosCarrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-        setCarrinho(produtosCarrinho);
+        const mp = new window.MercadoPago('TEST-cd12caa2-b4c6-4b45-b1ad-6d54563686fd', {
+            locale: 'pt-BR',
+        });
+
+        mp.cardForm({
+            amount: '100.00', // você pode usar o total do pedido dinamicamente
+            autoMount: true,
+            form: {
+                id: 'form-checkout',
+                cardholderName: { id: 'form-checkout__cardholderName' },
+                cardholderEmail: { id: 'form-checkout__cardholderEmail' },
+                cardNumber: { id: 'form-checkout__cardNumber' },
+                expirationDate: { id: 'form-checkout__expirationDate' },
+                securityCode: { id: 'form-checkout__securityCode' },
+                installments: { id: 'form-checkout__installments' },
+                identificationType: { id: 'form-checkout__identificationType' },
+                identificationNumber: { id: 'form-checkout__identificationNumber' },
+                issuer: { id: 'form-checkout__issuer' },
+            },
+            callbacks: {
+                onSubmit: (event) => {
+                    event.preventDefault();
+
+                    const data = mp.cardForm().getCardFormData();
+
+                    fetch('http://localhost:3000/processar-pagamento', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            transaction_amount: 100, 
+                            token: data.token,
+                            description: "Compra Bem-me-quer",
+                            installments: Number(data.installments),
+                            payment_method_id: data.paymentMethodId,
+                            issuer_id: data.issuerId,
+                            payer: {
+                                email: data.cardholderEmail,
+                                identification: {
+                                    type: data.identificationType,
+                                    number: data.identificationNumber,
+                                },
+                            },
+                        }),
+                    })
+                        .then((res) => res.json())
+                        .then((res) => {
+                            if (res.status === 'approved') {
+                                alert('Pagamento aprovado!');
+                            } else {
+                                alert('Pagamento pendente ou rejeitado.');
+                            }
+                        });
+                }
+            }
+        });
     }, []);
 
-    const removerProduto = (id) => {
-        const novosProdutos = carrinho.filter(produto => produto.id !== id);
-        setCarrinho(novosProdutos);
-        localStorage.setItem('carrinho', JSON.stringify(novosProdutos));
-        mostrarMensagem("Produto removido do carrinho!");
-    };
-
-    const calcularTotal = () => {
-        const total = carrinho.reduce((acc, produto) => {
-            return acc + Number(produto.preco);
-        }, 0);
-        return total.toFixed(2);
-    };
-
-    const mostrarMensagem = (mensagem) => {
-        setMensagem(mensagem);
-        setTimeout(() => {
-            setMensagem("");
-        }, 3000);
-    }
-
     return (
-        <section className="min-h-screen px-6 py-10 bg-gray-50">
-            {mensagem && (
-                <div className="fixed top-30 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-opacity duration-300">
-                    {mensagem}
-                </div>
-            )}
-
-            <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
-                <h1 className="text-3xl font-bold mb-6">Carrinho de Compras</h1>
-
-                {carrinho.length === 0 ? (
-                    <p className="text-lg text-gray-500">Seu carrinho está vazio, que tal dar uma olhada na nossa loja? <Link to="/Loja" className="text-dourado text underline">Loja</Link></p>
-                ) : (
-                    <div>
-                        <ul className="space-y-4">
-                            {carrinho.map(produto => (
-                                <li key={produto.id} className="flex justify-between items-center">
-                                    <div className="flex gap-4">
-                                        <img 
-                                            src={`/images/${produto.imagem}`} // Caminho atualizado para pegar a imagem da pasta public/images
-                                            alt={produto.nome} 
-                                            className="w-16 h-16 object-cover rounded" 
-                                        />
-                                        <div>
-                                            <h2 className="font-bold">{produto.nome}</h2>
-                                            <p className="text-sm text-gray-500">{produto.descricao}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-xl font-semibold">
-                                            R$ {Number(produto.preco).toFixed(2)}
-                                        </span>
-                                        <button
-                                            onClick={() => removerProduto(produto.id)}
-                                            className="text-red-500 hover:text-red-700"
-                                        >
-                                            Remover
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <div className="mt-6 flex justify-between items-center">
-                            <span className="text-xl font-semibold">Total: R$ {calcularTotal()}</span>
-                            <Link to={'/Checkoutpage'}
-                                className="bg-dourado text-white hover:bg-yellow-500 px-6 py-3 rounded-md hover:bg-dourado-dark focus:outline-none cursor-pointer"
-                            >
-                                Finalizar Compra
-                            </Link>
-                        </div>
-                    </div>
-                )}
+        <form id="form-checkout">
+            <div>
+                <input type="text" id="form-checkout__cardholderName" placeholder="Nome do titular" />
+                <input type="email" id="form-checkout__cardholderEmail" placeholder="Email" />
+                <input type="text" id="form-checkout__cardNumber" placeholder="Número do cartão" />
+                <input type="text" id="form-checkout__expirationDate" placeholder="MM/AA" />
+                <input type="text" id="form-checkout__securityCode" placeholder="CVV" />
+                <select id="form-checkout__installments"></select>
+                <select id="form-checkout__identificationType"></select>
+                <input type="text" id="form-checkout__identificationNumber" placeholder="CPF" />
+                <select id="form-checkout__issuer"></select>
             </div>
-        </section>
+            <button type="submit">Pagar</button>
+        </form>
     );
-}
+};
+
+export default Checkout;

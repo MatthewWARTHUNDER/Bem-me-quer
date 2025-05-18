@@ -12,6 +12,9 @@ import Produtopesquisa from './pages/Produtopesquisa.jsx';
 import Privacidade from './pages/Privacidade.jsx';
 import Checkoutpage from './pages/Checkoutpage.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
+import AdminLoginPage from './pages/AdminLoginPage.jsx';
+
+
 
 
 const router = createBrowserRouter([
@@ -54,7 +57,16 @@ const router = createBrowserRouter([
   {
     path: '/AdminPanel',
     element: <AdminPanel />
+  },
+  {
+    path: '/AdminLoginPage',
+    element: <AdminLoginPage />
+  },
+  {
+    path: '/AdminPanel',
+    element: <AdminPanel/>
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

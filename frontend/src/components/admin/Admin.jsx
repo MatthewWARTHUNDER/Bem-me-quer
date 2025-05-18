@@ -6,8 +6,8 @@ export default function Admin() {
     const [loading, setLoading] = useState(true);
     const [mensagem, setMensagem] = useState('');
     const [estoquesTemp, setEstoquesTemp] = useState({});
+    const [produtoEditando, setProdutoEditando] = useState(null);
 
-    // Buscar produtos
     const fetchProdutos = async () => {
         try {
             const res = await fetch('http://localhost:3000/produtos');
@@ -18,7 +18,6 @@ export default function Admin() {
         }
     };
 
-    // Buscar pedidos
     const fetchPedidos = async () => {
         try {
             const res = await fetch('http://localhost:3000/pedidos');
@@ -33,7 +32,6 @@ export default function Admin() {
         Promise.all([fetchProdutos(), fetchPedidos()]).then(() => setLoading(false));
     }, []);
 
-    // Atualizar estoque
     const atualizarEstoque = async (id, novoEstoque) => {
         try {
             const res = await fetch(`http://localhost:3000/produtos/${id}`, {
@@ -41,21 +39,18 @@ export default function Admin() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ estoque: novoEstoque }),
             });
-
             if (!res.ok) throw new Error('Falha ao atualizar estoque');
 
             setProdutos((prev) =>
                 prev.map((p) => (p.id === id ? { ...p, estoque: novoEstoque } : p))
             );
-
             setMensagem(`Produto ${id} atualizado com sucesso!`);
-            setTimeout(() => setMensagem(''), 3000);
+            setTimeout(() => setMensagem(''), 2000);
         } catch (error) {
             alert(error.message);
         }
     };
 
-    // Atualizar status do pedido
     const atualizarStatusPedido = async (id, novoStatus) => {
         try {
             const res = await fetch(`http://localhost:3000/pedidos/${id}`, {
@@ -63,7 +58,6 @@ export default function Admin() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: novoStatus }),
             });
-
             if (!res.ok) throw new Error('Falha ao atualizar status do pedido');
 
             setPedidos((prev) =>
@@ -71,6 +65,24 @@ export default function Admin() {
             );
         } catch (error) {
             alert(error.message);
+        }
+    };
+
+    const salvarEdicaoProduto = async () => {
+        try {
+            const res = await fetch(`http://localhost:3000/produtos/${produtoEditando.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(produtoEditando),
+            });
+            if (!res.ok) throw new Error('Erro ao salvar alterações');
+
+            await fetchProdutos();
+            setMensagem('Produto atualizado com sucesso!');
+            setTimeout(() => setMensagem(''), 2000);
+            setProdutoEditando(null);
+        } catch (err) {
+            alert(err.message);
         }
     };
 
@@ -86,23 +98,24 @@ export default function Admin() {
                 </div>
             )}
 
+            {/* === PRODUTOS === */}
             <section className="mb-10">
                 <h2 className="text-xl font-semibold mb-4">Produtos</h2>
                 <table className="w-full border-collapse border border-gray-300">
                     <thead>
                         <tr>
-                            <th className="border border-gray-300 p-2">ID</th>
-                            <th className="border border-gray-300 p-2">Nome</th>
-                            <th className="border border-gray-300 p-2">Estoque</th>
-                            <th className="border border-gray-300 p-2">Ações</th>
+                            <th className="border p-2">ID</th>
+                            <th className="border p-2">Nome</th>
+                            <th className="border p-2">Estoque</th>
+                            <th className="border p-2">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {produtos.map(({ id, nome, estoque }) => (
+                        {produtos.map(({ id, nome, estoque, descricao, preco }) => (
                             <tr key={id}>
-                                <td className="border border-gray-300 p-2">{id}</td>
-                                <td className="border border-gray-300 p-2">{nome}</td>
-                                <td className="border border-gray-300 p-2">
+                                <td className="border p-2">{id}</td>
+                                <td className="border p-2">{nome}</td>
+                                <td className="border p-2">
                                     <input
                                         type="number"
                                         defaultValue={estoque}
@@ -116,7 +129,7 @@ export default function Admin() {
                                         className="w-20 border border-gray-400 rounded p-1"
                                     />
                                 </td>
-                                <td className="border border-gray-300 p-2">
+                                <td className="border p-2 space-x-2">
                                     <button
                                         onClick={() => {
                                             const novoEstoque =
@@ -125,9 +138,23 @@ export default function Admin() {
                                                     : estoque;
                                             atualizarEstoque(id, novoEstoque);
                                         }}
-                                        className="bg-blue-500 text-white px-3 py-1 rounded"
+                                        className="bg-blue-500 text-white px-2 py-1 rounded"
                                     >
-                                        Atualizar
+                                        Atualizar Estoque
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            setProdutoEditando({
+                                                id,
+                                                nome,
+                                                descricao,
+                                                preco,
+
+                                            })
+                                        }
+                                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                                    >
+                                        Editar
                                     </button>
                                 </td>
                             </tr>
@@ -136,30 +163,91 @@ export default function Admin() {
                 </table>
             </section>
 
-            <section>
+            {/* === FORMULÁRIO DE EDIÇÃO === */}
+            {produtoEditando && (
+                <div className="mt-8 p-4 border rounded bg-gray-100">
+                    <h3 className="text-lg font-semibold mb-4">Editar Produto</h3>
+                    <div className="mb-2">
+                        <label className="block font-medium">Nome:</label>
+                        <input
+                            type="text"
+                            value={produtoEditando.nome}
+                            onChange={(e) =>
+                                setProdutoEditando({ ...produtoEditando, nome: e.target.value })
+                            }
+                            className="w-full border p-2 rounded"
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <label className="block font-medium">Descrição:</label>
+                        <textarea
+                            value={produtoEditando.descricao}
+                            onChange={(e) =>
+                                setProdutoEditando({
+                                    ...produtoEditando,
+                                    descricao: e.target.value,
+                                })
+                            }
+                            className="w-full border p-2 rounded"
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <label className="block font-medium">Preço (R$):</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            value={produtoEditando.preco}
+                            onChange={(e) =>
+                                setProdutoEditando({
+                                    ...produtoEditando,
+                                    preco: parseFloat(e.target.value),
+                                })
+                            }
+                            className="w-full border p-2 rounded"
+                        />
+                    </div>
+                    <button
+                        onClick={salvarEdicaoProduto}
+                        className="bg-green-600 text-white px-4 py-2 rounded"
+                    >
+                        Salvar
+                    </button>
+                    <button
+                        onClick={() => setProdutoEditando(null)}
+                        className="ml-2 bg-gray-400 text-white px-4 py-2 rounded"
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            )}
+
+            {/* === PEDIDOS === */}
+            <section className="mt-12">
                 <h2 className="text-xl font-semibold mb-4">Pedidos</h2>
                 <table className="w-full border-collapse border border-gray-300">
                     <thead>
                         <tr>
-                            <th className="border border-gray-300 p-2">ID</th>
-                            <th className="border border-gray-300 p-2">Cliente</th>
-                            <th className="border border-gray-300 p-2">Total</th>
-                            <th className="border border-gray-300 p-2">Status</th>
-                            <th className="border border-gray-300 p-2">Ações</th>
+                            <th className="border p-2">ID</th>
+                            <th className="border p-2">Cliente</th>
+                            <th className="border p-2">Total</th>
+                            <th className="border p-2">Status</th>
+                            <th className="border p-2">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {pedidos.map(({ id, nome_cliente, total, status }) => (
                             <tr key={id}>
-                                <td className="border border-gray-300 p-2">{id}</td>
-                                <td className="border border-gray-300 p-2">{nome_cliente}</td>
-                                <td className="border border-gray-300 p-2">R$ {total.toFixed(2)}</td>
-                                <td className="border border-gray-300 p-2">{status}</td>
-                                <td className="border border-gray-300 p-2">
+                                <td className="border p-2">{id}</td>
+                                <td className="border p-2">{nome_cliente}</td>
+                                <td className="border p-2">R$ {Number(total).toFixed(2)}</td>
+                                <td className="border p-2">{status}</td>
+                                <td className="border p-2">
                                     <select
                                         value={status}
-                                        onChange={(e) => atualizarStatusPedido(id, e.target.value)}
-                                        className="border border-gray-400 rounded p-1"
+                                        onChange={(e) =>
+                                            atualizarStatusPedido(id, e.target.value)
+                                        }
+                                        className="border rounded p-1"
                                     >
                                         <option value="Pendente">Pendente</option>
                                         <option value="Pago">Pago</option>
