@@ -19,14 +19,14 @@ function App() {
   return (
     <>
 
-      <AdminNavbar />
-      <Admin/>
-      {/* <Navbar/>
+      {/* <AdminNavbar /> */}
+      {/* <Admin/> */}
+      <Navbar/>
       <Carousel/>
       <SectionLoja/>
       <InstagramSection/>
       <CookieConsent/>
-      <Footer/>  */}
+      <Footer/> 
       {/* <AdminLogin /> */}
     </>
   )
