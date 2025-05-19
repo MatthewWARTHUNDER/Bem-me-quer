@@ -164,6 +164,7 @@ app.delete('/produtos/:id', (req, res) => {
 
 // Criar pedido
 app.post('/pedidos', (req, res) => {
+    const mensagemFinal = mensagem?.trim() || "Sem mensagem";
     const {
         nome_cliente,
         email,
@@ -173,6 +174,7 @@ app.post('/pedidos', (req, res) => {
         cidade,
         estado,
         total,
+        mensagem,
         produtos
     } = req.body;
 
@@ -181,10 +183,10 @@ app.post('/pedidos', (req, res) => {
     }
 
     const sqlPedido = `INSERT INTO pedidos 
-    (nome_cliente, email, telefone, cep, endereco, cidade, estado, total) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    (nome_cliente, email, telefone, cep, endereco, cidade, estado, mensagem, total) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    db.query(sqlPedido, [nome_cliente, email, telefone, cep, endereco, cidade, estado, total], (err, resultPedido) => {
+    db.query(sqlPedido, [nome_cliente, email, telefone, cep, endereco, cidade, estado, mensagem, total], (err, resultPedido) => {
         if (err) {
             console.error(err);
             return res.status(500).send("Erro ao salvar o pedido.");
@@ -224,11 +226,31 @@ app.get('/pedidos', (req, res) => {
 // Buscar pedido por ID
 app.get('/pedidos/:id', (req, res) => {
     const { id } = req.params;
-    db.query('SELECT * FROM pedidos WHERE id = ?', [id], (err, result) => {
+
+
+    db.query('SELECT * FROM pedidos WHERE id = ?', [id], (err, pedidoResult) => {
         if (err) {
-            return res.status(500).send('Erro ao buscar os pedidos: ' + err);
+            return res.status(500).send('Erro ao buscar o pedido: ' + err);
         }
-        res.status(200).json(result);
+
+        if (pedidoResult.length === 0) {
+            return res.status(404).send('Pedido não encontrado');
+        }
+
+
+        db.query('SELECT * FROM itens_pedido WHERE pedido_id = ?', [id], (err, itensResult) => {
+            if (err) {
+                return res.status(500).send('Erro ao buscar itens do pedido: ' + err);
+            }
+
+
+            const pedido = {
+                ...pedidoResult[0],
+                produtos: itensResult
+            };
+
+            res.status(200).json(pedido);
+        });
     });
 });
 

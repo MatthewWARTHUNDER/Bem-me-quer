@@ -77,10 +77,18 @@ export default function ProdutoDetalhe() {
                     <div className="space-y-3">
                         <button
                             onClick={() => adicionarAoCarrinho(produto)}
-                            className="w-full bg-dourado text-white py-2 rounded-lg text-sm hover:bg-yellow-500 transition cursor-pointer"
+                            disabled={produto.estoque === 0}
+                            className={`w-full py-2 rounded-lg text-sm text-white transition cursor-pointer ${produto.estoque === 0
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-dourado hover:bg-yellow-500'
+                                }`}
                         >
-                            Adicionar ao Carrinho
+                            {produto.estoque === 0 ? 'Produto Indisponível' : 'Adicionar ao Carrinho'}
                         </button>
+
+                        {produto.estoque === 0 && (
+                            <p className="text-red-600 text-sm mt-2">Este produto está atualmente fora de estoque.</p>
+                        )}
 
 
                         <div className="text-xs text-gray-600 mt-2">

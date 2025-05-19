@@ -12,7 +12,8 @@ export default function Checkout() {
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
     const [telefone, setTelefone] = useState('');
-    const [dataEntrega, setDataEntrega] = useState(''); 
+    const [dataEntrega, setDataEntrega] = useState('');
+    const [mensagemCliente, setMensagemCliente] = useState('');
 
     useEffect(() => {
         const produtosCarrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -40,8 +41,9 @@ export default function Checkout() {
             endereco: `${endereco} ${complemento}`.trim(),
             cidade,
             estado,
-            data_entrega: dataEntrega, 
+            data_entrega: dataEntrega,
             total: Number(calcularTotal()),
+            mensagem: mensagemCliente, 
             produtos: produtosPedido
         };
 
@@ -165,6 +167,12 @@ export default function Checkout() {
                             onChange={e => setTelefone(e.target.value)}
                         />
                     </div>
+                    <textarea
+                        placeholder="Deixe uma mensagem ou observações para o pedido"
+                        className="w-full border p-3 mt-2 rounded-md"
+                        rows={4}
+                        value={mensagemCliente}
+                        onChange={e => setMensagemCliente(e.target.value)} />
                 </div>
 
                 {/* Resumo do pedido */}

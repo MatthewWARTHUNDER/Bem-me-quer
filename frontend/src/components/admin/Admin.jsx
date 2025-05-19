@@ -7,6 +7,7 @@ export default function Admin() {
     const [mensagem, setMensagem] = useState('');
     const [estoquesTemp, setEstoquesTemp] = useState({});
     const [produtoEditando, setProdutoEditando] = useState(null);
+    const [pedidoSelecionado, setPedidoSelecionado] = useState(null); // novo estado
 
     const fetchProdutos = async () => {
         try {
@@ -86,6 +87,16 @@ export default function Admin() {
         }
     };
 
+    const buscarDetalhesPedido = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:3000/pedidos/${id}`);
+            const dados = await res.json();
+            setPedidoSelecionado(dados);
+        } catch (err) {
+            alert('Erro ao buscar detalhes do pedido');
+        }
+    };
+
     if (loading) return <p>Carregando dados...</p>;
 
     return (
@@ -149,7 +160,6 @@ export default function Admin() {
                                                 nome,
                                                 descricao,
                                                 preco,
-
                                             })
                                         }
                                         className="bg-yellow-500 text-white px-2 py-1 rounded"
@@ -254,12 +264,62 @@ export default function Admin() {
                                         <option value="Enviado">Enviado</option>
                                         <option value="Cancelado">Cancelado</option>
                                     </select>
+                                    {/* Botão para abrir detalhes */}
+                                    <button
+                                        onClick={() => buscarDetalhesPedido(id)}
+                                        className="bg-purple-500 text-white px-2 py-1 rounded ml-2"
+                                    >
+                                        Ver Detalhes
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </section>
+
+            {/* === DETALHES DO PEDIDO === */}
+            {pedidoSelecionado && (
+                <div className="mt-8 p-4 border rounded bg-white shadow">
+                    <h3 className="text-lg font-semibold mb-4">
+                        Detalhes do Pedido #{pedidoSelecionado.id}
+                    </h3>
+                    <p><strong>Cliente:</strong> {pedidoSelecionado.nome_cliente}</p>
+                    <p><strong>Email:</strong> {pedidoSelecionado.email}</p>
+                    <p><strong>Telefone:</strong> {pedidoSelecionado.telefone}</p>
+                    <p>
+                        <strong>Endereço:</strong> {pedidoSelecionado.endereco}, {pedidoSelecionado.cidade} - {pedidoSelecionado.estado}
+                    </p>
+                    <p><strong>CEP:</strong> {pedidoSelecionado.cep}</p>
+                    <p><strong>Status:</strong> {pedidoSelecionado.status}</p>
+                    <p>
+                        <strong>Data de entrega:</strong>{' '}
+                        {new Date(pedidoSelecionado.data_entrega).toLocaleDateString()}
+                    </p>
+
+                    {/* Aqui você adiciona a mensagem do cliente, se existir */}
+                    {pedidoSelecionado.mensagem && (
+                        <p><strong>Mensagem do Cliente:</strong> {pedidoSelecionado.mensagem}</p>
+                    )}
+
+                    <h4 className="mt-4 font-semibold">Produtos:</h4>
+                    <ul className="list-disc list-inside">
+                        {pedidoSelecionado.produtos?.map((produto) => (
+                            <li key={produto.id}>
+                                {produto.nome_produto} — R$ {parseFloat(produto.preco).toFixed(2)}
+                            </li>
+                        ))}
+                    </ul>
+                    <button
+                        onClick={() => setPedidoSelecionado(null)}
+                        className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                        Fechar Detalhes
+                    </button>
+                </div>
+            )}
+
         </div>
-    );
+    )
 }
+
