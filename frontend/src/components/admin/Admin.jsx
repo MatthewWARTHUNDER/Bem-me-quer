@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function Admin() {
     const [produtos, setProdutos] = useState([]);
@@ -7,7 +8,7 @@ export default function Admin() {
     const [mensagem, setMensagem] = useState('');
     const [estoquesTemp, setEstoquesTemp] = useState({});
     const [produtoEditando, setProdutoEditando] = useState(null);
-    const [pedidoSelecionado, setPedidoSelecionado] = useState(null); // novo estado
+    const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
 
     const fetchProdutos = async () => {
         try {
@@ -16,6 +17,17 @@ export default function Admin() {
             setProdutos(data);
         } catch (error) {
             alert('Erro ao buscar produtos');
+        }
+    };
+
+    const Deletarpedido = (id) => {
+        if (window.confirm("Tem certeza que deseja deletar este produto?")) {
+            axios
+                .delete(`http://localhost:3000/produtos/${id}`) // Envia uma requisição DELETE para remover o pedido
+                .then(() => {
+                    alert("produto deletado com sucesso!");
+                })
+                .catch((err) => console.error("Erro ao deletar produto:", err)); // Trata erros
         }
     };
 
@@ -51,6 +63,8 @@ export default function Admin() {
             alert(error.message);
         }
     };
+
+
 
     const atualizarStatusPedido = async (id, novoStatus) => {
         try {
@@ -166,6 +180,14 @@ export default function Admin() {
                                     >
                                         Editar
                                     </button>
+
+                                    <button
+                                        onClick={() => Deletarpedido(id)}
+                                        className="bg-red-500 text-white px-2 py-1 rounded"
+                                    >
+                                        Deletar
+                                    </button>
+
                                 </td>
                             </tr>
                         ))}
@@ -174,62 +196,64 @@ export default function Admin() {
             </section>
 
             {/* === FORMULÁRIO DE EDIÇÃO === */}
-            {produtoEditando && (
-                <div className="mt-8 p-4 border rounded bg-gray-100">
-                    <h3 className="text-lg font-semibold mb-4">Editar Produto</h3>
-                    <div className="mb-2">
-                        <label className="block font-medium">Nome:</label>
-                        <input
-                            type="text"
-                            value={produtoEditando.nome}
-                            onChange={(e) =>
-                                setProdutoEditando({ ...produtoEditando, nome: e.target.value })
-                            }
-                            className="w-full border p-2 rounded"
-                        />
+            {
+                produtoEditando && (
+                    <div className="mt-8 p-4 border rounded bg-gray-100">
+                        <h3 className="text-lg font-semibold mb-4">Editar Produto</h3>
+                        <div className="mb-2">
+                            <label className="block font-medium">Nome:</label>
+                            <input
+                                type="text"
+                                value={produtoEditando.nome}
+                                onChange={(e) =>
+                                    setProdutoEditando({ ...produtoEditando, nome: e.target.value })
+                                }
+                                className="w-full border p-2 rounded"
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <label className="block font-medium">Descrição:</label>
+                            <textarea
+                                value={produtoEditando.descricao}
+                                onChange={(e) =>
+                                    setProdutoEditando({
+                                        ...produtoEditando,
+                                        descricao: e.target.value,
+                                    })
+                                }
+                                className="w-full border p-2 rounded"
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <label className="block font-medium">Preço (R$):</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                value={produtoEditando.preco}
+                                onChange={(e) =>
+                                    setProdutoEditando({
+                                        ...produtoEditando,
+                                        preco: parseFloat(e.target.value),
+                                    })
+                                }
+                                className="w-full border p-2 rounded"
+                            />
+                        </div>
+                        <button
+                            onClick={salvarEdicaoProduto}
+                            className="bg-green-600 text-white px-4 py-2 rounded"
+                        >
+                            Salvar
+                        </button>
+                        <button
+                            onClick={() => setProdutoEditando(null)}
+                            className="ml-2 bg-gray-400 text-white px-4 py-2 rounded"
+                        >
+                            Cancelar
+                        </button>
                     </div>
-                    <div className="mb-2">
-                        <label className="block font-medium">Descrição:</label>
-                        <textarea
-                            value={produtoEditando.descricao}
-                            onChange={(e) =>
-                                setProdutoEditando({
-                                    ...produtoEditando,
-                                    descricao: e.target.value,
-                                })
-                            }
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <div className="mb-2">
-                        <label className="block font-medium">Preço (R$):</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            value={produtoEditando.preco}
-                            onChange={(e) =>
-                                setProdutoEditando({
-                                    ...produtoEditando,
-                                    preco: parseFloat(e.target.value),
-                                })
-                            }
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <button
-                        onClick={salvarEdicaoProduto}
-                        className="bg-green-600 text-white px-4 py-2 rounded"
-                    >
-                        Salvar
-                    </button>
-                    <button
-                        onClick={() => setProdutoEditando(null)}
-                        className="ml-2 bg-gray-400 text-white px-4 py-2 rounded"
-                    >
-                        Cancelar
-                    </button>
-                </div>
-            )}
+                )
+            }
 
             {/* === PEDIDOS === */}
             <section className="mt-12">
@@ -279,47 +303,49 @@ export default function Admin() {
             </section>
 
             {/* === DETALHES DO PEDIDO === */}
-            {pedidoSelecionado && (
-                <div className="mt-8 p-4 border rounded bg-white shadow">
-                    <h3 className="text-lg font-semibold mb-4">
-                        Detalhes do Pedido #{pedidoSelecionado.id}
-                    </h3>
-                    <p><strong>Cliente:</strong> {pedidoSelecionado.nome_cliente}</p>
-                    <p><strong>Email:</strong> {pedidoSelecionado.email}</p>
-                    <p><strong>Telefone:</strong> {pedidoSelecionado.telefone}</p>
-                    <p>
-                        <strong>Endereço:</strong> {pedidoSelecionado.endereco}, {pedidoSelecionado.cidade} - {pedidoSelecionado.estado}
-                    </p>
-                    <p><strong>CEP:</strong> {pedidoSelecionado.cep}</p>
-                    <p><strong>Status:</strong> {pedidoSelecionado.status}</p>
-                    <p>
-                        <strong>Data de entrega:</strong>{' '}
-                        {new Date(pedidoSelecionado.data_entrega).toLocaleDateString()}
-                    </p>
+            {
+                pedidoSelecionado && (
+                    <div className="mt-8 p-4 border rounded bg-white shadow">
+                        <h3 className="text-lg font-semibold mb-4">
+                            Detalhes do Pedido #{pedidoSelecionado.id}
+                        </h3>
+                        <p><strong>Cliente:</strong> {pedidoSelecionado.nome_cliente}</p>
+                        <p><strong>Email:</strong> {pedidoSelecionado.email}</p>
+                        <p><strong>Telefone:</strong> {pedidoSelecionado.telefone}</p>
+                        <p>
+                            <strong>Endereço:</strong> {pedidoSelecionado.endereco}, {pedidoSelecionado.cidade} - {pedidoSelecionado.estado}
+                        </p>
+                        <p><strong>CEP:</strong> {pedidoSelecionado.cep}</p>
+                        <p><strong>Status:</strong> {pedidoSelecionado.status}</p>
+                        <p>
+                            <strong>Data de entrega:</strong>{' '}
+                            {new Date(pedidoSelecionado.data_entrega).toLocaleDateString()}
+                        </p>
 
-                    {/* Aqui você adiciona a mensagem do cliente, se existir */}
-                    {pedidoSelecionado.mensagem && (
-                        <p><strong>Mensagem do Cliente:</strong> {pedidoSelecionado.mensagem}</p>
-                    )}
+                        {/* Aqui você adiciona a mensagem do cliente, se existir */}
+                        {pedidoSelecionado.mensagem && (
+                            <p><strong>Mensagem do Cliente:</strong> {pedidoSelecionado.mensagem}</p>
+                        )}
 
-                    <h4 className="mt-4 font-semibold">Produtos:</h4>
-                    <ul className="list-disc list-inside">
-                        {pedidoSelecionado.produtos?.map((produto) => (
-                            <li key={produto.id}>
-                                {produto.nome_produto} — R$ {parseFloat(produto.preco).toFixed(2)}
-                            </li>
-                        ))}
-                    </ul>
-                    <button
-                        onClick={() => setPedidoSelecionado(null)}
-                        className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-                    >
-                        Fechar Detalhes
-                    </button>
-                </div>
-            )}
+                        <h4 className="mt-4 font-semibold">Produtos:</h4>
+                        <ul className="list-disc list-inside">
+                            {pedidoSelecionado.produtos?.map((produto) => (
+                                <li key={produto.id}>
+                                    {produto.nome_produto} — R$ {parseFloat(produto.preco).toFixed(2)}
+                                </li>
+                            ))}
+                        </ul>
+                        <button
+                            onClick={() => setPedidoSelecionado(null)}
+                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+                        >
+                            Fechar Detalhes
+                        </button>
+                    </div>
+                )
+            }
 
-        </div>
+        </div >
     )
 }
 

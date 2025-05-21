@@ -11,9 +11,21 @@ export default function Navbar() {
     const [carrinhoState, setCarrinhoState] = useState(0);
 
     React.useEffect(() => {
-        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-        setCarrinhoState(carrinho.length);
-    })
+        const atualizarCarrinho = () => {
+            const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            setCarrinhoState(carrinho.length);
+        };
+
+        // Atualiza ao montar
+        atualizarCarrinho();
+
+        // Escuta mudanças do localStorage
+        window.addEventListener('storage', atualizarCarrinho);
+
+        return () => {
+            window.removeEventListener('storage', atualizarCarrinho);
+        };
+    }, []);
 
     const handleSearch = async (e) => {
         if (e.key === 'Enter') {
@@ -63,7 +75,7 @@ export default function Navbar() {
                                     <li><Link to="/Loja?categoria=paraeles" className="block px-4 py-2 hover:bg-gray-100">Para eles</Link></li>
                                     <li><Link to="/Loja?categoria=agradecimento" className="block px-4 py-2 hover:bg-gray-100">Agradecimento</Link></li>
                                     <li><Link to="/Loja?categoria=formatura" className="block px-4 py-2 hover:bg-gray-100">Formaturas</Link></li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -71,14 +83,7 @@ export default function Navbar() {
                         <Link to="/Sobre" className="text-black hover:text-dourado transition-colors duration-150">Sobre</Link>
                         <Link to="/localizacao" className="text-black hover:text-dourado transition-colors duration-150">Localização</Link>
 
-                        <input
-                            type="text"
-                            placeholder="Pesquisar"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyPress={handleSearch}
-                            className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado"
-                        />
+
 
                         <Link to="/Carrinho" className="relative text-black hover:text-dourado">
                             <ShoppingCart size={24} />
@@ -109,14 +114,6 @@ export default function Navbar() {
                         </Link>
 
 
-                        <input
-                            type="text"
-                            placeholder="Pesquisar"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyPress={handleSearch}
-                            className="bg-gato text-black rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dourado space-x-4 "
-                        />
 
 
                     </div>

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./db');
 const bcrypt = require('bcrypt');
+const path = require('path')
 
 const senha = "admin123";
 const saltRounds = 10;
@@ -22,12 +23,15 @@ app.use(cors());
 // const para criptografar a senha do admin ao banco de dados
 const senhaCriptografada = bcrypt.hashSync(NewAdmin.senha, 10);
 
+app.use(express.static(path.join(__dirname, 'dist'))); // ou 'build' dependendo da sua pasta
+
+
 
 
 // Processor para gerar o hash(criptografar) a senha do admin
 bcrypt.hash(senha, saltRounds, (err, hash) => {
     if (err) {
-        console.eror("erro ao gerar o hash:", err)
+        console.error("erro ao gerar o hash:", err)
     } else {
         console.log("Hash gerado com sucesso:", hash)
     }
@@ -116,6 +120,31 @@ app.post('/produtos', (req, res) => {
     );
 });
 
+
+app.get('/produtos-relacionados', async (req, res) => {
+    const { produtoId } = req.query;
+
+    try {
+        const [produto] = await db.query('SELECT * FROM produtos WHERE id = ?', [produtoId]);
+
+        if (!produto || produto.length === 0) {
+            return res.status(404).json({ erro: 'Produto não encontrado' });
+        }
+
+        const categoria = produto[0].categoria;
+
+        const [relacionados] = await db.query(
+            'SELECT * FROM produtos WHERE categoria = ? AND id != ? LIMIT 4',
+            [categoria, produtoId]
+        );
+
+        res.json(relacionados);
+    } catch (err) {
+        console.error('Erro ao buscar produtos relacionados:', err);
+        res.status(500).json({ erro: 'Erro interno do servidor' });
+    }
+});
+
 // Atualizar produto por ID (incluindo estoque)
 app.put('/produtos/:id', (req, res) => {
     const { id } = req.params;
@@ -145,22 +174,72 @@ app.put('/produtos/:id', (req, res) => {
     });
 });
 
+app.put('/pedidos/:id', (req, res) => {
+    const { id } = req.params;
+    const campos = [];
+    const valores = [];
+
+    console.log('Dados para atualizar:', req.body);
+
+    for (const [chave, valor] of Object.entries(req.body)) {
+        campos.push(`${chave} = ?`);
+        valores.push(valor);
+    }
+
+    if (campos.length === 0) {
+        return res.status(400).json({ error: 'Nenhum campo para atualizar' });
+    }
+
+    const query = `UPDATE pedidos SET ${campos.join(', ')} WHERE id = ?`;
+    valores.push(id);
+
+    db.query(query, valores, (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar o pedido:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar o pedido' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Pedido não encontrado' });
+        }
+
+        res.status(200).json({ message: 'Pedido atualizado com sucesso' });
+    });
+});
+
+
 // Deletar produto por ID
 app.delete('/produtos/:id', (req, res) => {
     const { id } = req.params;
 
-    db.query("DELETE FROM produtos WHERE id = ?", [id], (err, result) => {
+    // Primeiro remove os itens relacionados
+    db.query("DELETE FROM itens_pedido WHERE produto_id = ?", [id], (err) => {
         if (err) {
-            return res.status(500).send("Erro ao deletar o produto: " + err.message);
+            console.error("Erro ao deletar itens relacionados:", err);
+            return res.status(500).send("Erro ao deletar itens relacionados.");
         }
 
-        if (result.affectedRows === 0) {
-            return res.status(404).send("Produto não encontrado.");
-        }
+        // Depois deleta o produto
+        db.query("DELETE FROM produtos WHERE id = ?", [id], (err, result) => {
+            if (err) {
+                console.error("Erro ao deletar produto:", err);
+                return res.status(500).send("Erro ao deletar produto.");
+            }
 
-        res.status(200).send("Produto deletado com sucesso!");
+            if (result.affectedRows === 0) {
+                return res.status(404).send("Produto não encontrado.");
+            }
+
+            res.status(200).send("Produto deletado com sucesso!");
+        });
     });
 });
+
+
+app.delete('/pedidos/:id', (req, res) => {
+    const { id } = req.params;
+
+})
 
 // Criar pedido
 app.post('/pedidos', (req, res) => {

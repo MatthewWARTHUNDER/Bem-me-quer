@@ -9,6 +9,7 @@ export default function ProdutoDetalhe() {
     const [produto, setProduto] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [mensagem, setMensagem] = useState("");
+    const [adicionando, setAdicionando] = useState(false)
 
     useEffect(() => {
         setTimeout(() => {
@@ -33,19 +34,31 @@ export default function ProdutoDetalhe() {
     }
 
     function adicionarAoCarrinho(produto) {
-        const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
-        const produtoExistente = carrinhoAtual.find(item => item.id === produto.id);
+        setAdicionando(true);
 
-        if (!produtoExistente) {
-            carrinhoAtual.push(produto);
-            localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
-            mostrarMensagem("Produto adicionado ao carrinho!");
-        } else {
-            mostrarMensagem("Esse produto já está no carrinho.");
-        }
+        setTimeout(() => {
+            const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
+            const produtoExistente = carrinhoAtual.find(item => item.id === produto.id);
+
+            if (!produtoExistente) {
+                carrinhoAtual.push(produto);
+                localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
+                window.dispatchEvent(new Event("storage")); 
+                mostrarMensagem("Produto adicionado ao carrinho!");
+                window.dispatchEvent(new Event("carrinhoAtualizado")); 
+                mostrarMensagem("Produto adicionado ao carrinho!");
+            } else {
+                mostrarMensagem("Esse produto já está no carrinho.");
+            }
+
+            setAdicionando(false);
+        }, 2000);
     }
 
+
+
     if (carregando) return <Loader />;
+    if (adicionando) return <Loader />;
     if (!produto) return <p>Produto não encontrado</p>;
 
     return (
@@ -60,7 +73,7 @@ export default function ProdutoDetalhe() {
                 <img
                     src={`/images/${produto.imagem}`}
                     alt={produto.nome}
-                    className="w-full max-h-[400px] object-cover rounded-md"
+                    className="w-full h-auto max-h-[64vh] object-contain md:max-h-[400px] md:object-cover rounded-md"
                 />
 
                 <div className="flex flex-col justify-between text-sm">
@@ -79,8 +92,8 @@ export default function ProdutoDetalhe() {
                             onClick={() => adicionarAoCarrinho(produto)}
                             disabled={produto.estoque === 0}
                             className={`w-full py-2 rounded-lg text-sm text-white transition cursor-pointer ${produto.estoque === 0
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-dourado hover:bg-yellow-500'
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-dourado hover:bg-yellow-500'
                                 }`}
                         >
                             {produto.estoque === 0 ? 'Produto Indisponível' : 'Adicionar ao Carrinho'}
@@ -91,17 +104,14 @@ export default function ProdutoDetalhe() {
                         )}
 
 
-                        <div className="text-xs text-gray-600 mt-2">
-                            <div className="flex gap-2 mt-2">
-                                <img src={pix} className="h-20 ml-13" />
-                                <img src={mastercard} className="h-20" />
-
-                            </div>
+                        <div className="flex justify-center items-center gap-4 mt-4">
+                            <img src={pix} alt="Pix" className="h-16" />
+                            <img src={mastercard} alt="Mastercard" className="h-16" />
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 
 

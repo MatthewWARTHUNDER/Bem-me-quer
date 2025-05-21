@@ -8,7 +8,6 @@ import Produto from './pages/Produto.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Carrinho from './pages/Carrinho.jsx';
 import Sobre from './pages/Sobre.jsx';
-import Produtopesquisa from './pages/Produtopesquisa.jsx';
 import Privacidade from './pages/Privacidade.jsx';
 import Checkoutpage from './pages/Checkoutpage.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
@@ -43,20 +42,12 @@ const router = createBrowserRouter([
     element: <Sobre />
   },
   {
-    path: '/ProdutoPesquisa',
-    element: <Produtopesquisa />
-  },
-  {
     path: '/Privacidade',
     element: <Privacidade />
   },
   {
     path: '/Checkoutpage',
     element: <Checkoutpage />
-  },
-  {
-    path: '/AdminPanel',
-    element: <AdminPanel />
   },
   {
     path: '/AdminLoginPage',
