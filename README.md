@@ -14,18 +14,14 @@ Ferramentas usadas:
 
 O que foi feito... (até agora):
 
-* Criação de novas tabelas no banco de dados (pedidos, itens_pedidos);
-* Criação do componente Checkout;
-* Criação da página Checkoutpage;
-* Atualização em alguns dos componentes;
-* Criação de requisições HTTP.
-
+* Update em componentes como o Admin.jsx, ProdutoDetalhes.jsx e demais...
+* Criação no build dos arquivos
+* Criação do painel ADM
 
 O que falta...
 
-* Colocar um checkout do mercado pago;
-* Adicionar imagens pros produtos etc;
-* Criar painel de pedidos, produtos etc.
+* Integrar mercado pago ao site
+* Adicionar mais componentes..
 
 
 
