@@ -2,9 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./db');
 const bcrypt = require('bcrypt');
-const path = require('path')
-
-const senha = "admin123";
+const path = require('path');
+const senha = "";
 const saltRounds = 10;
 const app = express();
 
@@ -22,6 +21,7 @@ app.use(cors());
 
 // const para criptografar a senha do admin ao banco de dados
 const senhaCriptografada = bcrypt.hashSync(NewAdmin.senha, 10);
+
 
 app.use(express.static(path.join(__dirname, 'dist'))); // ou 'build' dependendo da sua pasta
 
@@ -52,29 +52,46 @@ db.query(
 )
 
 
+// REQUISIÇÕES HTTP
+
+
+app.get('/produtos-relacionados/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = 'SELECT * FROM produtos WHERE id != ? LIMIT 4';
+
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.error("Erro ao buscar produtos relacionados:", err);
+            return res.status(500).json({ erro: 'Erro ao buscar produtos relacionados' });
+        }
+
+        res.status(200).json(result);
+    });
+});
+
+
+
+
+
+
+
+
 // Rota para o login do admin
 app.post('/admin/login', (req, res) => {
     const { nome, senha } = req.body;
 
     db.query("SELECT * FROM admins WHERE nome = ?", [nome], (err, results) => {
-        if (err) {
-            console.error("Erro no banco:", err);
-            return res.status(500).json({ erro: "Erro no servidor." });
-        }
-
-        if (results.length === 0) {
-            return res.status(401).json({ erro: "Admin não encontrado" });
-        }
+        if (err) return res.status(500).json({ erro: "Erro no servidor." });
+        if (results.length === 0) return res.status(401).json({ erro: "Admin não encontrado" });
 
         const admin = results[0];
 
-        // Verifica a senha
         bcrypt.compare(senha, admin.senha_hash, (err, result) => {
-            if (err) {
-                return res.status(500).json({ erro: "Erro ao verificar senha" });
-            }
+            if (err) return res.status(500).json({ erro: "Erro ao verificar senha" });
 
             if (result) {
+
                 return res.status(200).json({ mensagem: "Login bem-sucedido" });
             } else {
                 return res.status(401).json({ erro: "Senha incorreta" });
@@ -82,6 +99,7 @@ app.post('/admin/login', (req, res) => {
         });
     });
 });
+
 
 
 // Buscar todos os produtos
@@ -121,29 +139,7 @@ app.post('/produtos', (req, res) => {
 });
 
 
-app.get('/produtos-relacionados', async (req, res) => {
-    const { produtoId } = req.query;
 
-    try {
-        const [produto] = await db.query('SELECT * FROM produtos WHERE id = ?', [produtoId]);
-
-        if (!produto || produto.length === 0) {
-            return res.status(404).json({ erro: 'Produto não encontrado' });
-        }
-
-        const categoria = produto[0].categoria;
-
-        const [relacionados] = await db.query(
-            'SELECT * FROM produtos WHERE categoria = ? AND id != ? LIMIT 4',
-            [categoria, produtoId]
-        );
-
-        res.json(relacionados);
-    } catch (err) {
-        console.error('Erro ao buscar produtos relacionados:', err);
-        res.status(500).json({ erro: 'Erro interno do servidor' });
-    }
-});
 
 // Atualizar produto por ID (incluindo estoque)
 app.put('/produtos/:id', (req, res) => {
@@ -236,14 +232,33 @@ app.delete('/produtos/:id', (req, res) => {
 });
 
 
+// Deletar pedido por ID
 app.delete('/pedidos/:id', (req, res) => {
     const { id } = req.params;
 
-})
+    // Primeiro, deletar itens do pedido
+    db.query("DELETE FROM itens_pedido WHERE pedido_id = ?", [id], (err) => {
+        if (err) {
+            console.error("Erro ao deletar itens do pedido:", err);
+            return res.status(500).send("Erro ao deletar itens do pedido.");
+        }
 
-// Criar pedido
+        // Depois, deletar o pedido
+        db.query("DELETE FROM pedidos WHERE id = ?", [id], (err, result) => {
+            if (err) {
+                console.error("Erro ao deletar o pedido:", err);
+                return res.status(500).send("Erro ao deletar o pedido.");
+            }
+
+            res.status(200).send("Pedido deletado com sucesso!");
+        });
+    });
+});
+
+
+// Criar pedido realizado no checkout
 app.post('/pedidos', (req, res) => {
-    const mensagemFinal = mensagem?.trim() || "Sem mensagem";
+
     const {
         nome_cliente,
         email,
@@ -257,6 +272,7 @@ app.post('/pedidos', (req, res) => {
         produtos
     } = req.body;
 
+    const mensagemFinal = mensagem?.trim() || "Sem mensagem";
     if (!nome_cliente || !email || !telefone || !cep || !endereco || !cidade || !estado || !total || !produtos) {
         return res.status(400).send("Dados incompletos do pedido, por favor preenche todos os campos!");
     }

@@ -20,16 +20,30 @@ export default function Admin() {
         }
     };
 
-    const Deletarpedido = (id) => {
+    const Deletarproduto = (id) => {
         if (window.confirm("Tem certeza que deseja deletar este produto?")) {
             axios
-                .delete(`http://localhost:3000/produtos/${id}`) // Envia uma requisição DELETE para remover o pedido
+                .delete(`http://localhost:3000/produtos/${id}`) // Envia uma requisição DELETE para remover o produto
                 .then(() => {
                     alert("produto deletado com sucesso!");
                 })
-                .catch((err) => console.error("Erro ao deletar produto:", err)); // Trata erros
+                .catch((err) => console.error("Erro ao deletar produto:", err));
         }
     };
+
+
+    const Deletarpedido = (id) => {
+        if (window.confirm("Tem certeza que deseja deletar este pedido?")) {
+            axios
+                .delete(`http://localhost:3000/pedidos/${id}`) // envia uma requisição DELETE para remover o pedido
+                .then(() => {
+                    alert("pedido deletado com sucesso!");
+                })
+                .catch((err) => {
+                    console.error("erro ao deletar o pedido: ", err)
+                })
+        }
+    }
 
     const fetchPedidos = async () => {
         try {
@@ -182,7 +196,7 @@ export default function Admin() {
                                     </button>
 
                                     <button
-                                        onClick={() => Deletarpedido(id)}
+                                        onClick={() => Deletarproduto(id)}
                                         className="bg-red-500 text-white px-2 py-1 rounded"
                                     >
                                         Deletar
@@ -288,12 +302,20 @@ export default function Admin() {
                                         <option value="Enviado">Enviado</option>
                                         <option value="Cancelado">Cancelado</option>
                                     </select>
-                                    {/* Botão para abrir detalhes */}
+                                    {/* Botão para abrir detalhes e deletar */}
                                     <button
                                         onClick={() => buscarDetalhesPedido(id)}
                                         className="bg-purple-500 text-white px-2 py-1 rounded ml-2"
                                     >
                                         Ver Detalhes
+                                    </button>
+
+
+                                    <button
+                                        onClick={() => Deletarpedido(id)}
+                                        className="bg-red-500 text-white px-2 py-1 rounded ml-2"
+                                    >
+                                        Deletar
                                     </button>
                                 </td>
                             </tr>

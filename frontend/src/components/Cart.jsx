@@ -64,7 +64,7 @@ export default function Cart() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <span className="text-xl font-semibold">
+                                        <span className="text-lg font-semibold">
                                             R$ {Number(produto.preco).toFixed(2)}
                                         </span>
                                         <button

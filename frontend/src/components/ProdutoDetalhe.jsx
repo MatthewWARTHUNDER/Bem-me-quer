@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import mastercard from "../assets/mastercard.png";
 import pix from "../assets/pix.png";
+import ProdutosRelacionados from './ProdutosRelacionados.jsx'
+
 
 export default function ProdutoDetalhe() {
     const { id } = useParams();
@@ -43,9 +45,9 @@ export default function ProdutoDetalhe() {
             if (!produtoExistente) {
                 carrinhoAtual.push(produto);
                 localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
-                window.dispatchEvent(new Event("storage")); 
+                window.dispatchEvent(new Event("storage"));
                 mostrarMensagem("Produto adicionado ao carrinho!");
-                window.dispatchEvent(new Event("carrinhoAtualizado")); 
+                window.dispatchEvent(new Event("carrinhoAtualizado"));
                 mostrarMensagem("Produto adicionado ao carrinho!");
             } else {
                 mostrarMensagem("Esse produto já está no carrinho.");
@@ -70,11 +72,28 @@ export default function ProdutoDetalhe() {
             )}
 
             <div className="max-w-4xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
-                <img
-                    src={`/images/${produto.imagem}`}
-                    alt={produto.nome}
-                    className="w-full h-auto max-h-[64vh] object-contain md:max-h-[400px] md:object-cover rounded-md"
-                />
+
+                {/* Imagem mobile */}
+                <div className="md:hidden w-full aspect-[4/3] bg-white rounded-md overflow-hidden flex items-center justify-center">
+                    <img
+                        src={`/images/${produto.imagem}`}
+                        alt={produto.nome}
+                        className="w-full h-full object-contain rounded-md"
+                    />
+                </div>
+
+
+                {/* Imagem desktop */}
+                <div className="hidden md:block">
+                    <img
+                        src={`/images/${produto.imagem}`}
+                        alt={produto.nome}
+                        className="w-full h-auto max-h-[400px] object-cover rounded-md"
+                    />
+                </div>
+
+
+
 
                 <div className="flex flex-col justify-between text-sm">
                     <div>
@@ -111,6 +130,8 @@ export default function ProdutoDetalhe() {
                     </div>
                 </div>
             </div>
+            <ProdutosRelacionados produtoId={produto.id} />
+
         </section >
     );
 

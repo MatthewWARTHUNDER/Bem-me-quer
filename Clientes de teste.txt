@@ -1,0 +1,48 @@
+🧍‍♂️ Usuário 1
+E-mail: joao.silva@email.com
+Nome: João Silva
+CEP: 99010-000
+Rua e número: Rua Independência, 123
+Complemento: Apto 302
+Cidade: Passo Fundo
+Estado: RS
+Data para entrega ou retirada: 25/05/2025
+Telefone: (54) 99123-4567
+Mensagem: Quero que o pedido seja entregue à tarde, por favor.
+
+🧍‍♀️ Usuário 2
+E-mail: maria.lopes@email.com
+Nome: Maria Lopes
+CEP: 99020-300
+Rua e número: Avenida Brasil Leste, 500
+Complemento: Sala 204
+Cidade: Passo Fundo
+Estado: RS
+Data para entrega ou retirada: 26/05/2025
+Telefone: (54) 99888-1122
+Mensagem: Presente de aniversário, favor não deixar na portaria.
+
+🧍 Usuário 3
+E-mail: carlos.menezes@email.com
+Nome: Carlos Menezes
+CEP: 99025-100
+Rua e número: Rua Uruguai, 789
+Complemento: Casa dos fundos
+Cidade: Passo Fundo
+Estado: RS
+Data para entrega ou retirada: 27/05/2025
+Telefone: (54) 99777-3344
+Mensagem: Eu irei pegar flores na loja.
+
+🧍 Usuário 4
+E-mail: ana.paula@email.com
+Nome: Ana Paula
+CEP: 99030-200
+Rua e número: Rua General Neto, 211
+Complemento: Cobertura 401
+Cidade: Passo Fundo
+Estado: RS
+Data para entrega ou retirada: 28/05/2025
+Telefone: (54) 99654-7832
+Mensagem: Entregar com bilhete escrito “Te amo pra sempre 💕”
+

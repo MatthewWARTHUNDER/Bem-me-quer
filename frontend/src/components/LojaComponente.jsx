@@ -67,7 +67,7 @@ export default function Loja() {
                                     alt={produto.nome}
                                     className="w-full h-48 object-cover rounded-md mb-3"
                                 />
-                                <h3 className="text-xl font-semibold mb-2">{produto.nome}</h3>
+                                <h3 className="text-lg font-semibold mb-2">{produto.nome}</h3>
                                 <p className="text-gray-600 mb-2">Categoria: {produto.categoria}</p>
                                 <p className="text-dourado font-bold">R$ {Number(produto.preco).toFixed(2)}</p>
                             </div>

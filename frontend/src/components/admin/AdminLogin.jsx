@@ -25,6 +25,8 @@ export default function AdminLogin() {
 
             if (response.ok) {
 
+                localStorage.setItem("token", data.token)
+
                 navigate("/AdminPanel");
             } else {
 
