@@ -3,7 +3,7 @@
 Tecnologias usadas:
 
 * React.js
-* Node.js
+* Node.js (express)
 * Tailwind.css
 * Mysql
 
