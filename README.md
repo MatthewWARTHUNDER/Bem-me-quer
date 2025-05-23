@@ -14,9 +14,8 @@ Ferramentas usadas:
 
 O que foi feito... (até agora):
 
-* Update em componentes como o Admin.jsx, ProdutoDetalhes.jsx e demais...
-* Criação no build dos arquivos
-* Criação do painel ADM
+* Criação do componente ProdutosRelacionados.jsx - vai puxar os produtos do banco de dados para ser exibido neste componente.
+* Criação da requisição delete para pedidos no painel ADM
 
 O que falta...
 
