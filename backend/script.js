@@ -23,10 +23,6 @@ app.use(cors());
 const senhaCriptografada = bcrypt.hashSync(NewAdmin.senha, 10);
 
 
-app.use(express.static(path.join(__dirname, 'dist'))); // ou 'build' dependendo da sua pasta
-
-
-
 
 // Processor para gerar o hash(criptografar) a senha do admin
 bcrypt.hash(senha, saltRounds, (err, hash) => {
@@ -55,6 +51,7 @@ db.query(
 // REQUISIÇÕES HTTP
 
 
+// Pegar os produtos relacionados na base do seu id
 app.get('/produtos-relacionados/:id', (req, res) => {
     const { id } = req.params;
 
@@ -309,6 +306,8 @@ app.post('/pedidos', (req, res) => {
     });
 });
 
+
+// Pegar o pedido no painel ADM
 app.get('/pedidos', (req, res) => {
     db.query('SELECT * FROM pedidos', (err, result) => {
         if (err) {
@@ -348,6 +347,7 @@ app.get('/pedidos/:id', (req, res) => {
         });
     });
 });
+
 
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");

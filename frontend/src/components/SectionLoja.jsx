@@ -3,7 +3,7 @@ import Footer from './Footer';
 import { Link } from 'react-router-dom';
 import Hearts from '../assets/Hearts.jpg';
 import FloresNobres from '../assets/FloresNobres.jpg';
-import Garibaldi from '../assets/Garibaldi.jpg';
+import BuqueRosacomBranco from '../assets/BuqueRosacomBranco.jpg';
 
 export default function SectionLoja() {
     return (
@@ -17,7 +17,7 @@ export default function SectionLoja() {
                     </div>
 
                     <div className="text-center">
-                        <img src={Garibaldi} alt="Buquê de flores" className="w-full h-80 object-cover rounded-md" />
+                        <img src={BuqueRosacomBranco} alt="Buquê de flores" className="w-full h-80 object-cover rounded-md" />
                         <h2 className="mt-4 text-lg font-medium">Buquê de flores</h2>
                     </div>
 

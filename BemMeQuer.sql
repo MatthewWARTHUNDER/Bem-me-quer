@@ -8,7 +8,15 @@ CREATE TABLE produtos (
     descricao TEXT,
     preco DECIMAL(10, 2) NOT NULL,
     imagem VARCHAR(255),
-    categoria VARCHAR(50)
+    categoria VARCHAR(50),
+    estoque INT
+);
+
+CREATE TABLE admins(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) UNIQUE NOT NULL,
+    senha_hash VARCHAR(200) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE pedidos (
@@ -21,7 +29,9 @@ CREATE TABLE pedidos (
     cidade VARCHAR(100),
     estado VARCHAR(50),
     total DECIMAL(10,2),
-    data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP
+	mensagem VARCHAR(255),
+    status VARCHAR(50),
+    data_entrega DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE itens_pedido (
@@ -35,12 +45,13 @@ CREATE TABLE itens_pedido (
     FOREIGN KEY (produto_id) REFERENCES produtos(id)
 );
 
-INSERT INTO  produtos (nome, descricao, preco, imagem, categoria) VALUES(
+INSERT INTO  produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES(
  'Buquê de Rosas Vermelhas',
   'Buquê com 12 rosas vermelhas frescas, envolvidas em papel kraft com laço de cetim vermelho.',
   89.90,
   'FloresVermelhas.jpg',
-  'buque'
+  'buque',
+   1
 );
 
 INSERT INTO produtos (nome, descricao, preco, imagem, categoria)
@@ -48,7 +59,7 @@ VALUES (
   'Orquídea Branca',
   'Orquídea branca em vaso de cerâmica elegante, perfeita para presentear.',
   120.00,
-  'orquidea-branca.jpg',
+  'FloresNobres.jpg',
   'arranjomesas'
 );
 
@@ -67,7 +78,7 @@ VALUES (
   'Presente de maternidade',
   'Um presente com flores e um leão.',
   170.00,
-  'omaternidade.jpg',
+  'Maternidade.jpg',
   'maternidade'
 );
 
@@ -79,10 +90,32 @@ INSERT INTO produtos (nome, descricao, preco, imagem, categoria) VALUES (
   'arranjomesas'
 );
 
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Buquê com flores mistas',
+  'Um buquê vibrante com flores mistas em tons de laranja, amarelo, vermelho e rosa. Perfeito para transmitir alegria, carinho e energia.',
+  95.00,
+  'BuqueMistas.jpg',
+  'buque',
+  5
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Buquê de rosas vermelhas e brancas',
+  'Um delicado buquê de rosas vermelhas com flores brancas, envolto em papel vermelho e finalizado com um laço branco.',
+  115.00,
+  'BuqueRosacomBranco.jpg',
+  'buque',
+  3
+  
+);
+
+
 
 /*Exibir os produtos na tabela */
 SELECT * FROM produtos;
 SELECT * FROM pedidos;
+SELECT * FROM itens_pedido;
+SELECT * FROM admins;
 
 /*Selecionar os produtos pelos seus ID's*/
 SELECT * FROM produtos WHERE id = 6 ;
@@ -90,16 +123,20 @@ SELECT * FROM produtos WHERE id = 6 ;
 /*Deletar a tabela produtos*/
 DROP TABLE produtos;
 DROP TABLE itens_pedido;
+DROP TABLE pedidos;
 
 /*Deletar os produtos na base do seu ID*/
-DELETE  FROM produtos WHERE id = 3;
-DELETE  FROM pedidos WHERE id = 1;
+DELETE  FROM produtos WHERE id = 6;
+DELETE  FROM pedidos WHERE id = 5;
+DELETE FROM admins where id =1;
 
 /*Função para deletar o banco de dados*/
 DROP DATABASE bemmequer_db;
 
 /*Atualizar uma tabela existente*/
 ALTER TABLE produtos ADD COLUMN estoque INT DEFAULT 0;
+ALTER TABLE pedidos ADD COLUMN status VARCHAR(50) DEFAULT 'pendente';
+ALTER TABLE pedidos ADD COLUMN mensagem TEXT;
 
 
 

@@ -210,7 +210,7 @@ export default function Checkout() {
                         className="w-full bg-dourado text-white py-3 rounded-md mt-6 hover:bg-yellow-500 transition"
                         onClick={enviarPedido}
                     >
-                        Prosseguir para o pagamento
+                        Enviar pedido
                     </button>
                 </aside>
             </main>
