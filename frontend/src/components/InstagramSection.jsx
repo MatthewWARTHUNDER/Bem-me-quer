@@ -19,7 +19,7 @@ const Imageminstagram = [
 
 const InstagramSection = () => {
     return (
-        <section className="bg-gray-100 py-16">
+        <section className="bg-white py-16">
             <div className="max-w-screen-xl mx-auto px-4 text-center">
                 <h1 className="text-3xl font-bold mb-4">Siga nos</h1>
                 <p className="text-lg mb-8">@bem_me_quer_floresepresentes</p>

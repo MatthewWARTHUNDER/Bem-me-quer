@@ -1,7 +1,11 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 @import "tailwindcss";
+
+
+
+
 
 @theme {
     --color-NavbarEfooter: #A4B396;
@@ -9,9 +13,14 @@
     --color-fundo: #e8e2d9;
     --color-laranjaforte: #E0810E;
     --color-cinza: #b5beba;
-    --color-dourado: #a37a10;
+    --color-dourado: #556b4e;
     --color-black: #222222;
     --color-gato: #e9e3da;
 }
 
+
+
+.font-vibes {
+  font-family: 'Great Vibes', cursive;
+}
 

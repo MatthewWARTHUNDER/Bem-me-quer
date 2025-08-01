@@ -20,7 +20,6 @@ export default function Cart() {
             setCarrinho(novosProdutos);
             localStorage.setItem('carrinho', JSON.stringify(novosProdutos));
 
-            // 🔔 Disparar evento customizado para notificar a Navbar
             window.dispatchEvent(new Event('carrinhoAtualizado'));
 
             setLoading(false);
@@ -38,47 +37,65 @@ export default function Cart() {
         setTimeout(() => setMensagem(""), 3000);
     };
 
+    function finalizarCompraWhatsapp() {
+        if (carrinho.length === 0) {
+            mostrarMensagem("Seu carrinho está vazio!");
+            return;
+        }
+
+        const numeroWhatsapp = "555499179427";
+
+        const listaProdutos = carrinho
+            .map(produto => `- ${produto.nome} (R$ ${Number(produto.preco).toFixed(2)})`)
+            .join("\n");
+
+        const mensagem = `Olá! Gostaria de consultar os seguintes produtos:\n${listaProdutos}\n\nEles estão disponíveis?`;
+
+        const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+        window.open(url, "_blank");
+    }
+
     return (
-        <section className="min-h-screen px-6 py-10 bg-gray-50">
+        <section className="min-h-screen px-4 sm:px-6 py-10 bg-gray-50">
             {loading && <Loader />}
 
             {mensagem && (
-                <div className="fixed top-30 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-opacity duration-300">
+                <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-opacity duration-300 text-center text-sm sm:text-base">
                     {mensagem}
                 </div>
             )}
 
-            <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
-                <h1 className="text-3xl font-bold mb-6">Carrinho de Compras</h1>
+            <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">Carrinho de Compras</h1>
 
                 {carrinho.length === 0 ? (
-                    <p className="text-lg text-gray-500">
-                        Seu carrinho está vazio, que tal dar uma olhada na nossa loja?{' '}
-                        <Link to="/Loja" className="text-dourado underline">Loja</Link>
+                    <p className="text-lg text-gray-500 text-center sm:text-left">
+                        Seu carrinho está vazio, que tal dar uma olhada na nossa{' '}
+                        <Link to="/Loja" className="text-dourado underline">loja</Link>?
                     </p>
                 ) : (
-                    <div>
+                    <div className="space-y-6">
                         <ul className="space-y-4">
                             {carrinho.map(produto => (
-                                <li key={produto.id} className="flex justify-between items-center">
-                                    <div className="flex gap-4">
+                                <li key={produto.id} className="flex flex-col sm:flex-row justify-between items-center gap-4 border-b pb-4">
+                                    <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left w-full sm:w-auto">
                                         <img
                                             src={`/images/${produto.imagem}`}
                                             alt={produto.nome}
-                                            className="w-16 h-16 object-cover rounded"
+                                            className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-lg"
                                         />
                                         <div>
-                                            <h2 className="font-bold">{produto.nome}</h2>
+                                            <h2 className="font-bold text-base sm:text-lg">{produto.nome}</h2>
                                             <p className="text-sm text-gray-500">{produto.descricao}</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex  flex-col sm:flex-row items-center gap-2">
                                         <span className="text-lg font-semibold">
                                             R$ {Number(produto.preco).toFixed(2)}
                                         </span>
                                         <button
                                             onClick={() => removerProduto(produto.id)}
-                                            className="text-red-500 hover:text-red-700"
+                                            className="text-red-500 hover:text-red-700 text-sm sm:text-base"
                                         >
                                             Remover
                                         </button>
@@ -87,13 +104,15 @@ export default function Cart() {
                             ))}
                         </ul>
 
-                        <div className="mt-6 flex justify-between items-center">
+                        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t pt-4">
                             <span className="text-xl font-semibold">Total: R$ {calcularTotal()}</span>
-                            <Link to="/Checkoutpage"
-                                className="bg-dourado text-white hover:bg-yellow-500 px-6 py-3 rounded-md hover:bg-dourado-dark focus:outline-none cursor-pointer"
+
+                            <button
+                                onClick={finalizarCompraWhatsapp}
+                                className="bg-dourado hover:bg-yellow-500 text-white px-6 py-3 rounded-md focus:outline-none w-full sm:w-auto"
                             >
-                                Finalizar Compra
-                            </Link>
+                                Consultar pedido via WhatsApp
+                            </button>
                         </div>
                     </div>
                 )}

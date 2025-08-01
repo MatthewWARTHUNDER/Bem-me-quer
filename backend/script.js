@@ -55,18 +55,36 @@ db.query(
 app.get('/produtos-relacionados/:id', (req, res) => {
     const { id } = req.params;
 
-    const query = 'SELECT * FROM produtos WHERE id != ? LIMIT 4';
 
-    db.query(query, [id], (err, result) => {
+    db.query("SELECT categoria FROM produtos WHERE id = ?", [id], (err, resultCategoria) => {
         if (err) {
-            console.error("Erro ao buscar produtos relacionados:", err);
-            return res.status(500).json({ erro: 'Erro ao buscar produtos relacionados' });
+            console.error("Erro ao buscar categoria do produto:", err);
+            return res.status(500).json({ erro: 'Erro ao buscar categoria' });
         }
 
-        res.status(200).json(result);
+        if (resultCategoria.length === 0) {
+            return res.status(404).json({ erro: 'Produto não encontrado' });
+        }
+
+        const categoria = resultCategoria[0].categoria;
+
+
+        const queryRelacionados = `
+            SELECT * FROM produtos
+            WHERE id != ? AND categoria = ?
+            ORDER BY RAND() LIMIT 4
+        `;
+
+        db.query(queryRelacionados, [id, categoria], (err, resultRelacionados) => {
+            if (err) {
+                console.error("Erro ao buscar produtos relacionados:", err);
+                return res.status(500).json({ erro: 'Erro ao buscar produtos relacionados' });
+            }
+
+            res.status(200).json(resultRelacionados);
+        });
     });
 });
-
 
 
 
@@ -144,7 +162,6 @@ app.put('/produtos/:id', (req, res) => {
     const campos = [];
     const valores = [];
 
-    // monta a query apenas com os campos enviados
     for (const [chave, valor] of Object.entries(req.body)) {
         campos.push(`${chave} = ?`);
         valores.push(valor);
@@ -230,81 +247,81 @@ app.delete('/produtos/:id', (req, res) => {
 
 
 // Deletar pedido por ID
-app.delete('/pedidos/:id', (req, res) => {
-    const { id } = req.params;
+// app.delete('/pedidos/:id', (req, res) => {
+//     const { id } = req.params;
 
-    // Primeiro, deletar itens do pedido
-    db.query("DELETE FROM itens_pedido WHERE pedido_id = ?", [id], (err) => {
-        if (err) {
-            console.error("Erro ao deletar itens do pedido:", err);
-            return res.status(500).send("Erro ao deletar itens do pedido.");
-        }
+//     // Primeiro, deletar itens do pedido
+//     db.query("DELETE FROM itens_pedido WHERE pedido_id = ?", [id], (err) => {
+//         if (err) {
+//             console.error("Erro ao deletar itens do pedido:", err);
+//             return res.status(500).send("Erro ao deletar itens do pedido.");
+//         }
 
-        // Depois, deletar o pedido
-        db.query("DELETE FROM pedidos WHERE id = ?", [id], (err, result) => {
-            if (err) {
-                console.error("Erro ao deletar o pedido:", err);
-                return res.status(500).send("Erro ao deletar o pedido.");
-            }
+//         // Depois, deletar o pedido
+//         db.query("DELETE FROM pedidos WHERE id = ?", [id], (err, result) => {
+//             if (err) {
+//                 console.error("Erro ao deletar o pedido:", err);
+//                 return res.status(500).send("Erro ao deletar o pedido.");
+//             }
 
-            res.status(200).send("Pedido deletado com sucesso!");
-        });
-    });
-});
+//             res.status(200).send("Pedido deletado com sucesso!");
+//         });
+//     });
+// });
 
 
 // Criar pedido realizado no checkout
-app.post('/pedidos', (req, res) => {
+// app.post('/pedidos', (req, res) => {
 
-    const {
-        nome_cliente,
-        email,
-        telefone,
-        cep,
-        endereco,
-        cidade,
-        estado,
-        total,
-        mensagem,
-        produtos
-    } = req.body;
+//     const {
+//         nome_cliente,
+//         email,
+//         telefone,
+//         cep,
+//         endereco,
+//         cidade,
+//         estado,
+//         total,
+//         mensagem,
+//         produtos
+//     } = req.body;
 
-    const mensagemFinal = mensagem?.trim() || "Sem mensagem";
-    if (!nome_cliente || !email || !telefone || !cep || !endereco || !cidade || !estado || !total || !produtos) {
-        return res.status(400).send("Dados incompletos do pedido, por favor preenche todos os campos!");
-    }
+//     const mensagemFinal = mensagem?.trim() || "Sem mensagem";
+//     if (!nome_cliente || !email || !telefone || !cep || !endereco || !cidade || !estado || !total || !produtos) {
+//         return res.status(400).send("Dados incompletos do pedido, por favor preenche todos os campos!");
+//     }
 
-    const sqlPedido = `INSERT INTO pedidos 
-    (nome_cliente, email, telefone, cep, endereco, cidade, estado, mensagem, total) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+//     const sqlPedido = `INSERT INTO pedidos 
+//     (nome_cliente, email, telefone, cep, endereco, cidade, estado, mensagem, total) 
+//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    db.query(sqlPedido, [nome_cliente, email, telefone, cep, endereco, cidade, estado, mensagem, total], (err, resultPedido) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("Erro ao salvar o pedido.");
-        }
+//     db.query(sqlPedido, [nome_cliente, email, telefone, cep, endereco, cidade, estado, mensagem, total], (err, resultPedido) => {
+//         if (err) {
+//             console.error(err);
+//             return res.status(500).send("Erro ao salvar o pedido.");
+//         }
 
-        const pedidoId = resultPedido.insertId;
+//         const pedidoId = resultPedido.insertId;
 
-        const sqlItens = `INSERT INTO itens_pedido (pedido_id, produto_id, nome_produto, preco) VALUES ?`;
+//         const sqlItens = `INSERT INTO itens_pedido (pedido_id, produto_id, nome_produto, preco) VALUES ?`;
 
-        const valoresItens = produtos.map(produto => [
-            pedidoId,
-            produto.produto_id,
-            produto.nome_produto,
-            produto.preco
-        ]);
+//         const valoresItens = produtos.map(produto => [
+//             pedidoId,
+//             produto.produto_id,
+//             produto.nome_produto,
+//             produto.preco
+//         ]);
 
-        db.query(sqlItens, [valoresItens], (errItens) => {
-            if (errItens) {
-                console.error(errItens);
-                return res.status(500).send("Erro ao salvar os itens do pedido.");
-            }
+//         db.query(sqlItens, [valoresItens], (errItens) => {
+//             if (errItens) {
+//                 console.error(errItens);
+//                 return res.status(500).send("Erro ao salvar os itens do pedido.");
+//             }
 
-            res.status(201).send({ mensagem: "Pedido criado com sucesso!", pedidoId });
-        });
-    });
-});
+//             res.status(201).send({ mensagem: "Pedido criado com sucesso!", pedidoId });
+//         });
+//     });
+// });
 
 
 // Pegar o pedido no painel ADM

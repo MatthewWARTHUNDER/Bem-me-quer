@@ -9,7 +9,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Carrinho from './pages/Carrinho.jsx';
 import Sobre from './pages/Sobre.jsx';
 import Privacidade from './pages/Privacidade.jsx';
-import Checkoutpage from './pages/Checkoutpage.jsx';
+// import Checkoutpage from './pages/Checkoutpage.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import AdminLoginPage from './pages/AdminLoginPage.jsx';
 
@@ -46,8 +46,8 @@ const router = createBrowserRouter([
     element: <Privacidade />
   },
   {
-    path: '/Checkoutpage',
-    element: <Checkoutpage />
+    // path: '/Checkoutpage',
+    // element: <Checkoutpage />
   },
   {
     path: '/AdminLoginPage',

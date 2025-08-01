@@ -41,7 +41,8 @@ const Carousel = () => {
     const goToSlide = (index) => setCurrent(index);
 
     return (
-        <section className="relative w-full h-[450px] overflow-hidden">
+        <section className=" bg-gray-100 relative w-full h-[250px] sm:h-[300px] md:w-[800px] md:h-[350px] lg:w-[1000px] lg:h-[400px overflow-hidden mx-auto rounded-xl shadow-lg"
+        >
             {images.map((item, index) => (
                 <div
                     key={index}
@@ -60,7 +61,7 @@ const Carousel = () => {
                         </h2>
                         <p className="text-lg md:text-xl mb-6 drop-shadow">{item.description}</p>
                         <Link to="/Loja">
-                            <button className="bg-dourado text-white font-semibold px-6 py-3 rounded hover:bg-yellow-500  transition cursor-pointer"> 
+                            <button className="bg-dourado text-white font-semibold px-6 py-3 rounded hover:bg-yellow-500  transition cursor-pointer">
                                 {item.button}
                             </button>
                         </Link>

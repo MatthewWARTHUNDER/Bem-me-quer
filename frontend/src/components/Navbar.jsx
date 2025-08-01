@@ -39,7 +39,7 @@ export default function Navbar() {
 
             <nav className="sticky top-7 w-full bg-NavbarEfooter py-5 px-6 shadow-md z-20">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-black font-serif">Bem-me-quer</h1>
+                    <h1 className="text-3xl font-vibes font text-black ">Bem me quer</h1>
 
                     <button
                         className="md:hidden text-black"
