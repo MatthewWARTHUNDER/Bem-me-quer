@@ -109,6 +109,215 @@ INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES
   
 );
 
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES(
+	'Mimo Maternidade',
+    'Box com tampa - vira organizador, mini urso, ferreiro rocher, mix de flores da semana',
+    174.00,
+    'maternidade.jpg',
+    'maternidade',
+    2
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES(
+	'Box formatura',
+    'Box personalizado com simbolo do curso ou nome',
+    299.00,
+    'Formatura.jpg',
+    'formatura',
+    2
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Buquê M - Rosas e girassóis',
+  'Um delicado buquê de rosas vermelhas com girassóis, envolto em papel de preferência e finalizado com um laço de preferência.',
+  299.00,
+  'BuqueRosacomBranco.jpg',
+  'buque',
+  3
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box girassol',
+  'Box com tampa, estilo livro, personalize a tampa com nome ou frase, jack daniels e girassóis.',
+  339.00,
+  'BoxDaniel.jpg',
+  'box',
+  4
+  
+);
+
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Maternidade báu G',
+  'Acompanhado com urso hipoalérgico G, Bau G, Flores, Itens de higiene, chocolates nobres e acabamentos finos (Consulte cores)',
+  389.00,
+  'MaternidadeBauG.jpg',
+  'maternidade',
+  3
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Buquê de rosas brancas',
+  'Um delicado buquê de rosas com flores brancas, envolto em papel de preferência e finalizado com um laço de preferência.',
+  289.00,
+  'BuqueRosacomBranco.jpg',
+  'buque',
+  3
+  
+);
+
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box flores + mini espumante',
+  'Um box acompanhado com flores e mini espumante',
+  359.00,
+  'BoxEspumante.jpg',
+  'box',
+  3
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box basic',
+  'Um box acompanhado com cesta de metal, vinho argentino, ferrero rocher e orquídea.',
+  378.00,
+  'BoxBasic.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box mimo',
+  'Box com tampa, mix de flores da semana e acompanha cartão.',
+  149.00,
+  'BoxMimo.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box Super GG - Flores Nobres',
+  'Super box de flores nobres, tamanho GG, acompanha cartão',
+  689.00,
+  'BoxSuperGGFloresNobres.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box premium orquídea',
+  'Descrição a fazer.',
+  399.00,
+  'BoxPremiumOrquidea.jpg',
+  'box',
+  5
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Maternidade',
+  'Box M acompanhado com mini urso, chocolate, mix de flores e balão personalizado (consulte cores).',
+  279.00,
+  'MaternidadeM.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Buquê P com balão',
+  'Buquê P com mix de flores e balão personalizado(nome ou frases com até 3 palavras).',
+  279.00,
+  'BuquePcomBalao.jpg',
+  'buque',
+  3
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box rosas',
+  'Box tampa livro, pode personalizar frase e nome, acompanhado com rosas e ferreiro rocher.',
+  448.00,
+  'BoxRosas.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Petit',
+  'Box PP com rosas, mini urso e chocolates (cor variada do box).',
+  149.00,
+  'BoxRosas.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box premium love',
+  'Box com balão, flores, chocolate e perfume EGEO(oboticário).',
+  529.00,
+  'BoxPremiumLove.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box whisky',
+  'Box de flores acompanhado com whsky jack daniels.',
+  359.00,
+  'BoxWhisky.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'buque 12 rosas',
+  'Buquê com 12 rosas',
+  289.00,
+  'Buque12rosas.jpg',
+  'buque',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box raio de sol',
+  'O Box Raio de Sol acompanha um arranjo floral com girassóis e flores amarelas, um sabonete de glicerina artesanal, um sabonete líquido perfumado e uma embalagem decorativa tipo box.',
+  279.00,
+  'BoxRaiodeSol.jpg',
+  'box',
+  2
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'buquê flores nobres G',
+  'O Buquê Flores Nobres G é composto por flores selecionadas de alta qualidade, com combinação elegante de tons e espécies nobres. Acompanha folhagens, acabamento em papel especial e laço decorativo.',
+  399.00,
+  'BuqueFloresNobresG.jpg',
+  'buque',
+  4
+  
+);
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (
+  'Box de flores - teste',
+  'Somente teste',
+  399.00,
+  'BoxFloresRosa.jpeg',
+  'box',
+  3
+  
+);
 
 
 /*Exibir os produtos na tabela */
