@@ -14,14 +14,12 @@ Ferramentas usadas:
 
 O que foi feito... (até agora):
 
-* Criação do componente ProdutosRelacionados.jsx - vai puxar os produtos do banco de dados para ser exibido neste componente.
-* Criação da requisição delete para pedidos no painel ADM.
-* esqueci de enviar o arquivo do banco de dados pro repositório kkkkkkk (sorry).
+* Mais componentes criados
+* Reestruturei as páginas: antes ela importava componentes separados, agora a maior parte do código dos componentes está diretamente dentro das páginas.
+* Ecluí os componentes isolados que não eram mais necessários.
 
 O que falta...
 
-* Integrar mercado pago ao site 
-* Adicionar mais componentes..
-
-
+* Imagem dos produtos.
+* Adicionar atalhos para todas as páginas do site.
 
