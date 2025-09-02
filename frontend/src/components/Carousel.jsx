@@ -28,6 +28,8 @@ const images = [
     }
 ];
 
+// ...existing imports...
+
 const Carousel = () => {
     const [current, setCurrent] = useState(0);
 
@@ -41,8 +43,7 @@ const Carousel = () => {
     const goToSlide = (index) => setCurrent(index);
 
     return (
-        <section className=" bg-gray-100 relative w-full h-[250px] sm:h-[300px] md:w-[800px] md:h-[350px] lg:w-[1000px] lg:h-[400px overflow-hidden mx-auto rounded-xl shadow-lg"
-        >
+        <section className="w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[650px] relative overflow-hidden mx-auto rounded-none shadow-lg">
             {images.map((item, index) => (
                 <div
                     key={index}
@@ -56,12 +57,12 @@ const Carousel = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10" />
                     <div className="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-20 text-white z-20">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-3 drop-shadow">
+                        <h2 className="text-4xl md:text-6xl font-bold mb-3 drop-shadow">
                             {item.title}
                         </h2>
-                        <p className="text-lg md:text-xl mb-6 drop-shadow">{item.description}</p>
-                        <Link to="/Loja">
-                            <button className="bg-dourado text-white font-semibold px-6 py-3 rounded hover:bg-yellow-500  transition cursor-pointer">
+                        <p className="text-xl md:text-2xl mb-6 drop-shadow">{item.description}</p>
+                        <Link to="/loja">
+                            <button className="bg-dourado text-white font-semibold px-8 py-4 rounded hover:bg-yellow-500 transition cursor-pointer text-lg md:text-xl">
                                 {item.button}
                             </button>
                         </Link>
@@ -70,11 +71,11 @@ const Carousel = () => {
             ))}
 
             {/* Bolinhas de navegação */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
                 {images.map((_, index) => (
                     <button
                         key={index}
-                        className={`w-3 h-3 rounded-full ${index === current ? "bg-white" : "bg-white/50"
+                        className={`w-4 h-4 rounded-full border-2 border-white ${index === current ? "bg-white" : "bg-white/50"
                             }`}
                         onClick={() => goToSlide(index)}
                         aria-label={`Ir para slide ${index + 1}`}
@@ -84,5 +85,6 @@ const Carousel = () => {
         </section>
     );
 };
+
 
 export default Carousel;

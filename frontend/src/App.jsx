@@ -20,7 +20,7 @@ function App() {
   const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/produtos') 
+    fetch('http://localhost:3000/produtos')
       .then(res => res.json())
       .then(data => setProdutos(data))
       .catch(err => console.error("Erro ao carregar produtos:", err));
@@ -45,6 +45,7 @@ function App() {
     <>
       <Navbar />
       <Carousel />
+
 
       <ProdutosDestaque produtos={produtos} onAddToCart={handleAddToCart} />
 

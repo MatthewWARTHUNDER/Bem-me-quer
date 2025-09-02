@@ -16,6 +16,8 @@ import AdminLoginPage from './pages/AdminLoginPage.jsx';
 
 
 
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -55,8 +57,9 @@ const router = createBrowserRouter([
   },
   {
     path: '/AdminPanel',
-    element: <AdminPanel/>
-  }
+    element: <AdminPanel />
+  },
+
 
 ]);
 
