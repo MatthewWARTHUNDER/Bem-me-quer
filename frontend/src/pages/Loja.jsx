@@ -1,7 +1,7 @@
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 
 const categorias = [
     { label: "Todos", value: "" },
@@ -38,7 +38,6 @@ export default function Loja() {
             setProdutosFiltrados(produtos);
         }
     }, [categoria, produtos]);
-
 
     function handleSelectChange(e) {
         const valor = e.target.value;
@@ -92,20 +91,37 @@ export default function Loja() {
                     </aside>
 
                     {/* Produtos */}
-                    <div className="sm:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="sm:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-stretch">
                         {produtosFiltrados.map((produto) => (
-                            <Link to={`/produto/${produto.id}`} key={produto.id}>
-                                <div className="bg-white p-4 rounded-xl shadow hover:shadow-md transition cursor-pointer">
+                            <div
+                                key={produto.id}
+                                className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105 h-full flex flex-col"
+                            >
+                                <Link to={`/produto/${produto.id}`}>
                                     <img
                                         src={`http://localhost:5173/images/${produto.imagem}`}
                                         alt={produto.nome}
                                         className="w-full h-48 object-cover rounded-md mb-3"
                                     />
-                                    <h3 className="text-lg font-semibold mb-2">{produto.nome}</h3>
-                                    <p className="text-gray-600 mb-2">Categoria: {produto.categoria}</p>
-                                    <p className="text-dourado font-bold">R$ {Number(produto.preco).toFixed(2)}</p>
+                                </Link>
+
+                                <h3 className="text-lg font-semibold mb-1 line-clamp-2 min-h-[3.5rem]">
+                                    {produto.nome}
+                                </h3>
+
+                                <p className="text-sm text-gray-500 mb-2">Categoria: {produto.categoria}</p>
+                                <p className="text-xl text-dourado font-bold mb-3">R$ {Number(produto.preco).toFixed(2)}</p>
+
+                                {/* botão fixo no final */}
+                                <div className="mt-auto">
+                                    <Link
+                                        to={`/produto/${produto.id}`}
+                                        className="block text-center bg-VerdeMusgo text-white w-full py-2 rounded-md hover:bg-dourado transition"
+                                    >
+                                        Ver produto
+                                    </Link>
                                 </div>
-                            </Link>
+                            </div>
                         ))}
                     </div>
                 </div>

@@ -81,7 +81,7 @@ export default function Produto() {
 
             <div className="max-w-4xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                {/* Imagem mobile */}
+
                 <div className="md:hidden w-full aspect-[4/3] bg-white rounded-md overflow-hidden flex items-center justify-center">
                     <img
                         src={`/images/${produto.imagem}`}
@@ -91,7 +91,6 @@ export default function Produto() {
                 </div>
 
 
-                {/* Imagem desktop */}
                 <div className="hidden md:block">
                     <img
                         src={`/images/${produto.imagem}`}

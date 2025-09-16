@@ -11,6 +11,8 @@ import AdminLogin from './components/admin/AdminLogin'
 import AdminNavbar from './components/admin/AdminNavbar'
 import { useNavigate } from 'react-router-dom';
 import ProdutosDestaque from './components/ProdutoDestaque';
+import CarouselBuques from './components/CarouselBuques';
+import SobreNos from './components/SobreNos';
 
 
 
@@ -50,8 +52,11 @@ function App() {
       <ProdutosDestaque produtos={produtos} onAddToCart={handleAddToCart} />
 
       <SectionLoja />
-      <InstagramSection />
+
+      <CarouselBuques/>
+      <SobreNos/>
       <CookieConsent />
+      <InstagramSection />
       <Footer />
     </>
   )

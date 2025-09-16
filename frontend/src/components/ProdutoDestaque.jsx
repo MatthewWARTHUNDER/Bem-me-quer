@@ -4,21 +4,33 @@ import { useNavigate } from 'react-router-dom';
 export default function ProdutoDestaque({ produtos, onAddToCart }) {
     const navigate = useNavigate();
     const [slideIndex, setSlideIndex] = useState(0);
-    const [produtosPorSlide, setProdutosPorSlide] = useState(5);
+    const [produtosPorSlide, setProdutosPorSlide] = useState(4);
+    const [produtosPorBola, setProdutosPorBola] = useState(4);
+
 
     useEffect(() => {
         function updateProdutosPorSlide() {
             const largura = window.innerWidth;
-            if (largura < 640) setProdutosPorSlide(1);
-            else if (largura < 768) setProdutosPorSlide(2);
-            else if (largura < 1024) setProdutosPorSlide(3);
-            else setProdutosPorSlide(4);
+            if (largura < 640) {
+                setProdutosPorSlide(1);
+                setProdutosPorBola(4);
+            } else if (largura < 768) {
+                setProdutosPorSlide(2);
+                setProdutosPorBola(2);
+            } else if (largura < 1024) {
+                setProdutosPorSlide(3);
+                setProdutosPorBola(3);
+            } else {
+                setProdutosPorSlide(4);
+                setProdutosPorBola(4);
+            }
         }
 
         updateProdutosPorSlide();
         window.addEventListener('resize', updateProdutosPorSlide);
         return () => window.removeEventListener('resize', updateProdutosPorSlide);
     }, []);
+
 
     const grupos = [];
     for (let i = 0; i < produtos.length; i += produtosPorSlide) {
@@ -35,11 +47,15 @@ export default function ProdutoDestaque({ produtos, onAddToCart }) {
         navigate(`/produto/${id}`);
     };
 
+
+    const totalBolinhas = Math.ceil(produtos.length / produtosPorBola);
+
     return (
-        <div className="w-full max-w-7xl mx-auto px-4 py-12 relative">
-            <h2 className="text-center text-2xl font-bold text-dourado mb-6">
+        <section className="bg-gray-50 w-full max-w mx-auto px-4 py-14 relative">
+            <h2 className="text-center text-3xl font-semibold text-dourado mb-10">
                 Destaques | Mais vendidos
             </h2>
+
 
             <div className="overflow-hidden">
                 <div
@@ -49,36 +65,38 @@ export default function ProdutoDestaque({ produtos, onAddToCart }) {
                     {grupos.map((grupo, i) => (
                         <div
                             key={i}
-                            className="flex flex-nowrap justify-center gap-2 sm:gap-4 md:gap-20 min-w-full px-2"
+                            className="flex flex-nowrap justify-center gap-4 sm:gap-6 md:gap-8 min-w-full px-2"
                         >
                             {grupo.map((produto) => (
                                 <div
                                     key={produto.id}
-                                    className="rounded-lg shadow-md cursor-pointer flex-shrink-0 relative w-48 sm:w-52 md:w-56 lg:w-60"
+                                    className="bg-white rounded-xl shadow-md flex-shrink-0 flex flex-col items-center w-60 h-[400px] p-4 cursor-pointer hover:shadow-lg transition"
                                 >
                                     <div
-                                        className="overflow-hidden h-48 sm:h-52 md:h-56 lg:h-60"
+                                        className="overflow-hidden w-full h-64 rounded-lg mb-3"
                                         onClick={() => handleClickProduto(produto.id)}
                                     >
                                         <img
                                             src={`/images/${produto.imagem}`}
                                             alt={produto.nome}
-                                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                                         />
                                     </div>
-
-                                    <div
-                                        className="p-2 text-center"
+                                    <h3
+                                        className="text-lg font-semibold text-center line-clamp-2 mb-2"
                                         onClick={() => handleClickProduto(produto.id)}
                                     >
-                                        <span className="inline-block bg-dourado text-white text-xs px-2 py-1 rounded-full mb-1">
-                                            {produto.categoria}
-                                        </span>
-                                        <h3 className="font-semibold">{produto.nome}</h3>
-                                        <p className="text-dourado font-bold">
-                                            R$ {parseFloat(produto.preco).toFixed(2)}
-                                        </p>
-                                    </div>
+                                        {produto.nome}
+                                    </h3>
+                                    <p className="text-dourado font-bold text-lg mb-3">
+                                        R$ {parseFloat(produto.preco).toFixed(2)}
+                                    </p>
+                                    <button
+                                        onClick={() => handleClickProduto(produto.id)}
+                                        className="border border-green-900 text-green-900 font-semibold w-full py-2 rounded-full hover:bg-green-900 hover:text-white transition"
+                                    >
+                                        Ver produto
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -86,32 +104,34 @@ export default function ProdutoDestaque({ produtos, onAddToCart }) {
                 </div>
             </div>
 
+
             <button
                 onClick={() => irParaSlide(slideIndex - 1)}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 hover:text-dourado"
+                className="absolute top-1/2 left-3 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-black/20 text-white hover:bg-dourado transition"
                 aria-label="Anterior"
             >
                 &#10094;
             </button>
             <button
                 onClick={() => irParaSlide(slideIndex + 1)}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 hover:text-dourado"
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-black/20 text-white hover:bg-dourado transition"
                 aria-label="Próximo"
             >
                 &#10095;
             </button>
 
-            <div className="flex justify-center mt-4 space-x-2">
-                {grupos.map((_, idx) => (
+
+            <div className="flex justify-center mt-6 space-x-2">
+                {Array.from({ length: totalBolinhas }).map((_, idx) => (
                     <button
                         key={idx}
                         onClick={() => irParaSlide(idx)}
-                        className={`w-3 h-3 rounded-full ${idx === slideIndex ? 'bg-dourado' : 'bg-gray-300'
+                        className={`w-3 h-3 rounded-full transition ${idx === slideIndex ? 'bg-dourado' : 'bg-gray-300'
                             }`}
                         aria-label={`Ir para slide ${idx + 1}`}
                     />
                 ))}
             </div>
-        </div>
+        </section>
     );
 }

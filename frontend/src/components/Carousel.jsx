@@ -28,7 +28,7 @@ const images = [
     }
 ];
 
-// ...existing imports...
+
 
 const Carousel = () => {
     const [current, setCurrent] = useState(0);
@@ -43,7 +43,8 @@ const Carousel = () => {
     const goToSlide = (index) => setCurrent(index);
 
     return (
-        <section className="w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[650px] relative overflow-hidden mx-auto rounded-none shadow-lg">
+        <section className="w-full h-[450px] relative overflow-hidden mx-auto rounded-none shadow-lg">
+
             {images.map((item, index) => (
                 <div
                     key={index}
@@ -70,7 +71,6 @@ const Carousel = () => {
                 </div>
             ))}
 
-            {/* Bolinhas de navegação */}
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
                 {images.map((_, index) => (
                     <button
