@@ -2,6 +2,8 @@ import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import BackButton from "../components/BackButton";
+import axios from "axios";
 
 const categorias = [
     { label: "Todos", value: "" },
@@ -25,9 +27,8 @@ export default function Loja() {
     const [produtosFiltrados, setProdutosFiltrados] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3000/produtos")
-            .then(res => res.json())
-            .then(data => setProdutos(data))
+        axios.get("http://localhost:3000/produtos")
+            .then(res => setProdutos(res.data))
             .catch(err => console.error("Erro ao carregar produtos:", err));
     }, []);
 
@@ -41,88 +42,87 @@ export default function Loja() {
 
     function handleSelectChange(e) {
         const valor = e.target.value;
-        if (valor) {
-            navigate(`?categoria=${valor}`);
-        } else {
-            navigate(`/loja`);
-        }
+        navigate(valor ? `?categoria=${valor}` : '/loja');
     }
 
     return (
         <>
             <Navbar />
-            <section className="min-h-screen px-4 py-10 bg-gray-50">
-                <h2 className="text-3xl font-vibes text-center mb-8">Nossa Loja</h2>
+            <section className="min-h-screen px-4 py-10 ">
+                <div className="max-w-7xl mx-auto">
+                    <BackButton />
+                    <h2 className="text-5xl font-vibes text-VerdeMusgo text-center mb-10">Nossa Loja</h2>
 
-                <div className="flex flex-col sm:flex-row gap-6 max-w-7xl mx-auto">
-                    {/* Dropdown mobile */}
-                    <div className="block sm:hidden mb-4 px-2">
-                        <label htmlFor="categoria-select" className="sr-only">Filtrar categoria</label>
-                        <select
-                            id="categoria-select"
-                            className="w-full border border-gray-300 rounded-md px-3 py-2"
-                            value={categoria || ""}
-                            onChange={handleSelectChange}
-                        >
-                            {categorias.map(cat => (
-                                <option key={cat.value} value={cat.value}>
-                                    {cat.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <div className="flex flex-col sm:flex-row gap-8">
 
-                    {/* Sidebar desktop */}
-                    <aside className="hidden sm:block sm:w-1/4">
-                        <h3 className="text-lg font-semibold mb-4">Categorias</h3>
-                        <ul className="space-y-2">
-                            {categorias.map((cat) => (
-                                <li key={cat.value}>
-                                    <Link
-                                        to={cat.value ? `?categoria=${cat.value}` : "/loja"}
-                                        className={`block px-4 py-2 rounded-md hover:bg-dourado hover:text-white transition
-                                    ${categoria === cat.value ? "bg-VerdeMusgo text-white" : "text-gray-700"}`}
-                                    >
-                                        {cat.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </aside>
-
-                    {/* Produtos */}
-                    <div className="sm:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-stretch">
-                        {produtosFiltrados.map((produto) => (
-                            <div
-                                key={produto.id}
-                                className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105 h-full flex flex-col"
+                        <div className="sm:hidden px-2">
+                            <label htmlFor="categoria-select" className="sr-only">Filtrar categoria</label>
+                            <select
+                                id="categoria-select"
+                                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-VerdeMusgo"
+                                value={categoria || ""}
+                                onChange={handleSelectChange}
                             >
-                                <Link to={`/produto/${produto.id}`}>
-                                    <img
-                                        src={`http://localhost:5173/images/${produto.imagem}`}
-                                        alt={produto.nome}
-                                        className="w-full h-48 object-cover rounded-md mb-3"
-                                    />
-                                </Link>
+                                {categorias.map(cat => (
+                                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                                ))}
+                            </select>
+                        </div>
 
-                                <h3 className="text-lg font-semibold mb-1 line-clamp-2 min-h-[3.5rem]">
-                                    {produto.nome}
-                                </h3>
 
-                                <p className="text-sm text-gray-500 mb-2">Categoria: {produto.categoria}</p>
-                                <p className="text-xl text-dourado font-bold mb-3">R$ {Number(produto.preco).toFixed(2)}</p>
+                        <aside className="hidden sm:block sm:w-1/4 lg:w-1/5">
+                            <h3 className="text-xl font-semibold mb-4 text-gray-800">Categorias</h3>
+                            <ul className="space-y-2">
+                                {categorias.map((cat) => (
+                                    <li key={cat.value}>
+                                        <Link
+                                            to={cat.value ? `?categoria=${cat.value}` : "/loja"}
+                                            className={`block px-4 py-2 rounded-md transition-colors duration-200 
+                                            ${(categoria === cat.value) || (!categoria && !cat.value)
+                                                    ? "bg-VerdeMusgo text-white font-semibold"
+                                                    : "text-gray-700 hover:bg-VerdeMusgo/10"
+                                                }`}
+                                        >
+                                            {cat.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </aside>
 
-                                {/* botão fixo no final */}
-                                <div className="mt-auto">
-                                    <Link
-                                        to={`/produto/${produto.id}`}
-                                        className="block text-center bg-VerdeMusgo text-white w-full py-2 rounded-md hover:bg-dourado transition"
-                                    >
-                                        Ver produto
+
+<div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                            {produtosFiltrados.map((produto) => (
+                                <div
+                                    key={produto.id}
+                                    className="group bg-white rounded-lg shadow-md overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300"
+                                >
+                                    <Link to={`/produto/${produto.id}`} className="block overflow-hidden">
+                                        <img
+                                            src={`/images/${produto.imagem}`}
+                                            alt={produto.nome}
+                                            className="w-full h-56 object-cover transition-transform duration-300"
+                                        />
                                     </Link>
+
+                                    <div className="p-4 flex flex-col flex-grow">
+                                        <h3 className="text-lg font-semibold text-gray-800 mb-1 flex-grow">
+                                            {produto.nome}
+                                        </h3>
+                                        <p className="text-xl text-VerdeMusgo font-bold my-3">
+                                            R$ {Number(produto.preco).toFixed(2)}
+                                        </p>
+                                        <Link
+                                            to={`/produto/${produto.id}`}
+                                            className="block text-center bg-white border border-VerdeMusgo text-VerdeMusgo w-full py-2 rounded-md font-semibold transition-colors duration-300 hover:bg-VerdeMusgo hover:text-white"
+                                        >
+                                            Ver produto
+                                        </Link>
+                                    </div>
+
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>

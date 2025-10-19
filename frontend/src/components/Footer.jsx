@@ -22,7 +22,7 @@ const Footer = () => {
                 <div className="flex flex-col items-center md:items-start">
                     <Link to="/" className="flex flex-col items-center md:items-start gap-2">
                         <img src={logo} alt="Logo da empresa" className="h-32 md:h-40" />
-                        {/* <span className="text-2xl font-vibes">Bem me Quer</span> */}
+
                     </Link>
                 </div>
 
@@ -62,14 +62,13 @@ const Footer = () => {
                     <Link to="/localizacao" >Localização</Link>
                 </div>
 
-
                 <div className="flex flex-col gap-2">
                     <h2 className="text-lg font-semibold">Produtos</h2>
-                    <Link to="/produtos?categoria=arranjos">Arranjos</Link>
-                    <Link to="/produtos?categoria=buque">Buquês</Link>
-                    <Link to="/produtos?categoria=coroas">Coroas</Link>
-                    <Link to="/produtos?categoria=presentes">Presentes Especiais</Link>
-                    <Link to="/produtos?categoria=vasos">Vasos de Flores</Link>
+                    <Link to="/loja?categoria=arranjomesas" className="hover:text-VerdeMusgo transition-colors">Arranjos de Mesa</Link>
+                    <Link to="/loja?categoria=buque" className="hover:text-VerdeMusgo transition-colors">Buquês</Link>
+                    <Link to="/loja?categoria=box" className="hover:text-VerdeMusgo transition-colors">Box de Flores</Link>
+                    <Link to="/loja?categoria=vasos" className="hover:text-VerdeMusgo transition-colors">Flores em Vasos</Link>
+                    <Link to="/loja?categoria=paraeles" className="hover:text-VerdeMusgo transition-colors">Para Eles</Link>
                 </div>
 
 

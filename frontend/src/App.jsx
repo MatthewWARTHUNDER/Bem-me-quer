@@ -5,7 +5,6 @@ import Carousel from './components/Carousel'
 import InstagramSection from './components/InstagramSection'
 import SectionLoja from './components/SectionLoja'
 import CookieConsent from './components/CookiesConsent'
-// import Checkout from './components/Checkout'
 import Admin from './components/admin/Admin'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminNavbar from './components/admin/AdminNavbar'
@@ -13,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import ProdutosDestaque from './components/ProdutoDestaque';
 import CarouselBuques from './components/CarouselBuques';
 import SobreNos from './components/SobreNos';
+import Diferencias from './components/Diferencias';
 
 
 
@@ -55,6 +55,7 @@ function App() {
 
       <CarouselBuques/>
       <SobreNos/>
+      <Diferencias />
       <CookieConsent />
       <InstagramSection />
       <Footer />

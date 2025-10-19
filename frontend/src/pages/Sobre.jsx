@@ -2,6 +2,7 @@ import BuqueMistas from '../assets/BuqueMistas.jpg';
 import BuqueRosacomBranco from '../assets/BuqueRosacomBranco.jpg';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import BackButton from '../components/BackButton';
 
 
 
@@ -9,6 +10,7 @@ export default function Sobre() {
     return (
         <>
         <Navbar />
+        <BackButton/>
         <section className="max-w-6xl mx-auto px-6 py-16 space-y-20">
 
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">

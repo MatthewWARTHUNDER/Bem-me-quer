@@ -30,7 +30,7 @@ const CookieConsent = () => {
                     <p className="text-sm mt-1">
                         O site <strong>Bem me quer</strong> utiliza cookies para melhorar sua experiência.
                         Ao continuar, você concorda com nossa{" "}
-                        <Link to={'/Privacidade'} className="underline text-dourado hover:text-yellow-300">
+                        <Link to={'/Privacidade'} className="underline text-verde hover:text-VerdeMusgo">
                             Política de Privacidade
                         </Link>
                     </p>
@@ -38,7 +38,7 @@ const CookieConsent = () => {
                 </div>
                 <button
                     onClick={handleAccept}
-                    className="bg-dourado hover:bg-yellow-500 text-white font-semibold py-2 px-6 rounded-md transition-all"
+                    className="bg-verde text-white font-semibold py-2 px-6 rounded-md transition-all"
                 >
                     Aceitar e continuar
                 </button>

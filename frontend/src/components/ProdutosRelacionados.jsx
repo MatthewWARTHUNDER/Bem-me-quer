@@ -46,7 +46,7 @@ export default function ProdutosRelacionados({ produtoId }) {
                 {p.nome}
               </h3>
               <p className="text-gray-600 mb-3 capitalize">{p.categoria}</p>
-              <p className="text-dourado font-bold text-lg mt-auto">
+              <p className="text-verde font-bold text-lg mt-auto">
                 R$ {Number(p.preco).toFixed(2)}
               </p>
             </div>

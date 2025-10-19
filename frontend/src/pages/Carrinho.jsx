@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
+import BackButton from '../components/BackButton';
 
 export default function Carrinho() {
     const [carrinho, setCarrinho] = useState([]);
@@ -61,6 +62,7 @@ export default function Carrinho() {
         <>
             <Navbar />
             <section className="min-h-screen px-4 sm:px-6 py-10 bg-gray-50">
+                
                 {loading && <Loader />}
 
                 {mensagem && (
@@ -69,13 +71,14 @@ export default function Carrinho() {
                     </div>
                 )}
 
-                <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow">
+                <div className="max-w-5xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow">
+                    <BackButton/>
                     <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">Carrinho de Compras</h1>
 
                     {carrinho.length === 0 ? (
                         <p className="text-lg text-gray-500 text-center sm:text-left">
                             Seu carrinho está vazio, que tal dar uma olhada na nossa{' '}
-                            <Link to="/Loja" className="text-dourado underline">loja</Link>?
+                            <Link to="/Loja" className="text-verde underline">loja</Link>?
                         </p>
                     ) : (
                         <div className="space-y-6">
@@ -111,9 +114,9 @@ export default function Carrinho() {
                             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t pt-4">
                                 <span className="text-xl font-semibold">Total: R$ {calcularTotal()}</span>
 
-                                <button
+                        <button
                                     onClick={finalizarCompraWhatsapp}
-                                    className="bg-dourado hover:bg-yellow-500 text-white px-6 py-3 rounded-md focus:outline-none w-full sm:w-auto"
+                                    className="bg-VerdeMusgo text-white font-bold px-8 py-3 rounded-lg shadow-lg transition-transform duration-200 hover:scale-105 cursor-pointer w-full sm:w-auto"
                                 >
                                     Consultar pedido via WhatsApp
                                 </button>

@@ -14,13 +14,13 @@ export default function Navbar() {
             setCarrinhoState(carrinho.length);
         };
 
-        // Atualiza ao montar
+
         atualizarCarrinho();
 
-        // Escuta mudanças no localStorage (outras abas)
+
         window.addEventListener('storage', atualizarCarrinho);
 
-        // Escuta o evento customizado (mesma aba)
+
         window.addEventListener('carrinhoAtualizado', atualizarCarrinho);
 
         return () => {
@@ -31,7 +31,7 @@ export default function Navbar() {
 
     return (
         <>
-            <div className="sticky top-0 w-full bg-dourado py-1 text-white text-sm font-medium z-30">
+            <div className="sticky top-0 w-full bg-verde py-1 text-white text-sm font-medium z-30">
                 <Link to={'/Localizacao'} className="flex items-center justify-center gap-1">
                     Nossa Localização <MapPin size={14} />
                 </Link>
@@ -49,10 +49,10 @@ export default function Navbar() {
                     </button>
 
                     <div className="hidden md:flex gap-10 items-center relative">
-                        <Link to="/" className="text-black hover:text-dourado transition-colors duration-150">Home</Link>
+                        <Link to="/" className="text-black hover:text-verde transition-colors duration-150">Home</Link>
 
                         <div className="relative group">
-                            <button className="text-black hover:text-dourado flex items-center gap-1 transition-colors duration-150">
+                            <button className="text-black hover:text-verde flex items-center gap-1 transition-colors duration-150">
                                 Categorias <ChevronDown size={16} />
                             </button>
                             <div className="absolute top-full left-0 z-10 hidden group-hover:block bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44">
@@ -68,13 +68,13 @@ export default function Navbar() {
                             </div>
                         </div>
 
-                        <Link to="/Sobre" className="text-black hover:text-dourado transition-colors duration-150">Sobre</Link>
-                        <Link to="/Localizacao" className="text-black hover:text-dourado transition-colors duration-150">Localização</Link>
+                        <Link to="/Sobre" className="text-black hover:text-verde transition-colors duration-150">Sobre</Link>
+                        <Link to="/Localizacao" className="text-black hover:text-verde transition-colors duration-150">Localização</Link>
 
-                        <Link to="/Carrinho" className="relative text-black hover:text-dourado">
+                        <Link to="/Carrinho" className="relative text-black hover:text-verde">
                             <ShoppingCart size={24} />
                             {carrinhoState > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-dourado text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                <span className="absolute -top-2 -right-2 bg-verde text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                                     {carrinhoState}
                                 </span>
                             )}
@@ -88,10 +88,10 @@ export default function Navbar() {
                         <Link to="/Loja" onClick={() => setIsMobileMenuOpen(false)}>Categorias</Link>
                         <Link to="/Sobre" onClick={() => setIsMobileMenuOpen(false)}>Sobre</Link>
                         <Link to="/Localizacao" onClick={() => setIsMobileMenuOpen(false)}>Localização</Link>
-                        <Link to="/Carrinho" className="relative text-black hover:text-dourado">
+                        <Link to="/Carrinho" className="relative text-black hover:text-verde">
                             <ShoppingCart size={24} />
                             {carrinhoState > 0 && (
-                                <span className="absolute -top-2 start-4 bg-dourado text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                <span className="absolute -top-2 start-4 bg-verde text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                                     {carrinhoState}
                                 </span>
                             )}

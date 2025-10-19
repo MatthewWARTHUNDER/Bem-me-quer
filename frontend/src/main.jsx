@@ -9,13 +9,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Carrinho from './pages/Carrinho.jsx';
 import Sobre from './pages/Sobre.jsx';
 import Privacidade from './pages/Privacidade.jsx';
-// import Checkoutpage from './pages/Checkoutpage.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import AdminLoginPage from './pages/AdminLoginPage.jsx';
 import AdminGet from './components/admin/AdminGet.jsx';
 import AdminPut from './components/admin/AdminPut.jsx';
 import AdminDelete from './components/admin/AdminDelete.jsx';
-
 
 
 
@@ -73,7 +71,8 @@ const router = createBrowserRouter([
   {
     path: '/AdminPut/:id',
     element: <AdminPut />
-  }
+  },
+
 
 
 

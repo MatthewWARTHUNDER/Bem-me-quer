@@ -6,32 +6,28 @@ import pix from "../assets/pix.png";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProdutosRelacionados from "../components/ProdutosRelacionados";
-
-
+import BackButton from "../components/BackButton";
+import axios from "axios";
 
 export default function Produto() {
     const { id } = useParams();
     const [produto, setProduto] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [mensagem, setMensagem] = useState("");
-    const [adicionando, setAdicionando] = useState(false)
+    const [adicionando, setAdicionando] = useState(false);
 
     useEffect(() => {
         setCarregando(true);
-        setProduto(null);
-
-        setTimeout(() => {
-            fetch(`http://localhost:3000/produtos/${id}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    setProduto(data);
-                    setCarregando(false);
-                })
-                .catch((err) => {
-                    console.error(err);
-                    setCarregando(false);
-                });
-        }, 1000);
+        axios.get(`http://localhost:3000/produtos/${id}`)
+            .then(res => {
+                setProduto(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+            .finally(() => {
+                setCarregando(false);
+            });
     }, [id]);
 
     function mostrarMensagem(msg) {
@@ -42,114 +38,85 @@ export default function Produto() {
     }
 
     function adicionarAoCarrinho(produto) {
-        setAdicionando(true);
+        const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
+        const produtoExistente = carrinhoAtual.find(item => item.id === produto.id);
 
-        setTimeout(() => {
-            const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
-            const produtoExistente = carrinhoAtual.find(item => item.id === produto.id);
-
-            if (!produtoExistente) {
-                carrinhoAtual.push(produto);
-                localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
-                window.dispatchEvent(new Event("storage"));
-                mostrarMensagem("Produto adicionado ao carrinho!");
-                window.dispatchEvent(new Event("carrinhoAtualizado"));
-                mostrarMensagem("Produto adicionado ao carrinho!");
-            } else {
-                mostrarMensagem("Esse produto já está no carrinho.");
-            }
-
-            setAdicionando(false);
-        }, 2000);
+        if (!produtoExistente) {
+            carrinhoAtual.push(produto);
+            localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
+            window.dispatchEvent(new Event("storage"));
+            window.dispatchEvent(new Event("carrinhoAtualizado"));
+            mostrarMensagem("Produto adicionado ao carrinho!");
+        } else {
+            mostrarMensagem("Esse produto já está no carrinho.");
+        }
     }
 
-
-
     if (carregando) return <Loader />;
-    if (adicionando) return <Loader />;
     if (!produto) return <p>Produto não encontrado</p>;
 
     return (
         <>
-        <Navbar />
-        <section className="min-h-screen px-4 py-6 bg-gray-50">
-            {mensagem && (
-                <div className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow z-50 text-sm">
-                    {mensagem}
-                </div>
-            )}
+            <Navbar />
+            <section className="min-h-screen px-4 py-6 bg-CorDeFundo">
+                {mensagem && (
+                    <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-base">
+                        {mensagem}
+                    </div>
+                )}
+                <BackButton />
 
-            <div className="max-w-4xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
-
-
-                <div className="md:hidden w-full aspect-[4/3] bg-white rounded-md overflow-hidden flex items-center justify-center">
-                    <img
-                        src={`/images/${produto.imagem}`}
-                        alt={produto.nome}
-                        className="w-full h-full object-contain rounded-md"
-                    />
-                </div>
-
-
-                <div className="hidden md:block">
-                    <img
-                        src={`/images/${produto.imagem}`}
-                        alt={produto.nome}
-                        className="w-full h-auto max-h-[400px] object-cover rounded-md"
-                    />
-                </div>
-
-
-
-
-                <div className="flex flex-col justify-between text-sm">
-                    <div>
-                        <h1 className="text-2xl font-semibold mb-1">{produto.nome}</h1>
-                        <p className="text-gray-700 mb-2">{produto.descricao}</p>
-                        <p className="text-gray-600 mb-2">Categoria: {produto.categoria}</p>
-                        <p className="text-gray-600 mb-2 font-black">Estoque disponível: {produto.estoque}</p>
-                        <p className="text-dourado text-xl font-bold mb-4">
-                            R$ {Number(produto.preco).toFixed(2)}
-                        </p>
+                <div className="max-w-5xl mx-auto bg-white p-4 md:p-8 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="w-full aspect-square bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                        <img
+                            src={`/images/${produto.imagem}`}
+                            alt={produto.nome}
+                            className="w-full h-full object-cover rounded-lg"
+                        />
                     </div>
 
-                    <div className="space-y-3">
-                        <button
-                            onClick={() => adicionarAoCarrinho(produto)}
-                            disabled={produto.estoque === 0}
-                            className={`w-full py-2 rounded-lg text-sm text-white transition cursor-pointer ${produto.estoque === 0
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-dourado hover:bg-yellow-500'
-                                }`}
-                        >
-                            {produto.estoque === 0 ? 'Produto Indisponível' : 'Adicionar ao Carrinho'}
-                        </button>
-
-                        {produto.estoque === 0 && (
-                            <p className="text-red-600 text-sm mt-2">Este produto está atualmente fora de estoque.</p>
-                        )}
-
-
-                        <div className="flex flex-col items-center gap-2 mt-4">
-                            <div className="flex justify-center items-center gap-4">
-                                <img src={pix} alt="Pix" className="h-16" />
-                                <img src={mastercard} alt="Mastercard" className="h-16" />
-                            </div>
-
-                            <p className="text-center text-sm text-gray-600 mt-2">
-                                <span className="font-semibold text-red-600">Atenção:</span> somente aceitamos cartão se for pago <span className="font-medium">presencialmente na loja</span>!<br />
-                                Existe <span className="font-medium">taxa de entrega</span> dependendo da sua localização.
+                    <div className="flex flex-col justify-between">
+                        <div>
+                            <h1 className="text-3xl font-serif font-bold mb-2 text-gray-800">{produto.nome}</h1>
+                            <p className="text-gray-500 mb-4">Categoria: {produto.categoria}</p>
+                            <p className="text-gray-700 mb-4 leading-relaxed">{produto.descricao}</p>
+                            <p className="text-3xl text-VerdeMusgo font-bold mb-6">
+                                R$ {Number(produto.preco).toFixed(2)}
                             </p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <button
+                                onClick={() => adicionarAoCarrinho(produto)}
+                                disabled={produto.estoque === 0}
+                                className={`w-full py-3 rounded-lg text-base font-semibold transition-colors duration-300 ${produto.estoque === 0
+                                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                                    : 'bg-white border border-VerdeMusgo text-VerdeMusgo hover:bg-VerdeMusgo hover:text-white'
+                                    }`}
+                            >
+                                {produto.estoque === 0 ? 'Produto Indisponível' : 'Adicionar ao Carrinho'}
+                            </button>
+
+                            {produto.estoque > 0 && produto.estoque <= 5 && (
+                                <p className="text-red-600 text-sm text-center">Restam apenas {produto.estoque} unidades!</p>
+                            )}
+
+                            <div className="flex flex-col items-center gap-2 pt-4 border-t">
+                                <div className="flex justify-center items-center gap-4">
+                                    <img src={pix} alt="Pix" className="h-12" />
+                                    <img src={mastercard} alt="Mastercard" className="h-12" />
+                                </div>
+                                <p className="text-center text-xs text-gray-500 mt-2">
+                                    <span className="font-semibold text-red-600">Atenção:</span> Pagamento com cartão somente na loja.<br />
+                                    Taxa de entrega pode ser aplicada.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <ProdutosRelacionados produtoId={produto.id} />
-
-        </section >
-        <Footer/>
+                <ProdutosRelacionados produtoId={produto.id} />
+            </section >
+            <Footer />
         </>
     );
-
-
 }

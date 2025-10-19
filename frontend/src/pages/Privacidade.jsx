@@ -1,11 +1,13 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import BackButton from "../components/BackButton";
 
 export default function Privacidade() {
     return (
         <>
         <Navbar />
+        <BackButton />
             <div className="flex justify-center px-4 py-10">
                 <div className="max-w-4xl w-full bg-white shadow-md rounded-lg p-8">
                     <h2 className="text-2xl font-bold mb-6 text-center">

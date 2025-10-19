@@ -7,45 +7,8 @@ const senha = "";
 const saltRounds = 10;
 const app = express();
 
-// const para armazenar a senha do admin e o seu nome
-const NewAdmin = {
-    nome: "Franciele",
-    senha: "Pastel 10"
-
-};
-
 app.use(express.json());
 app.use(cors());
-
-
-
-// const para criptografar a senha do admin ao banco de dados
-const senhaCriptografada = bcrypt.hashSync(NewAdmin.senha, 10);
-
-
-
-// Processor para gerar o hash(criptografar) a senha do admin
-bcrypt.hash(senha, saltRounds, (err, hash) => {
-    if (err) {
-        console.error("erro ao gerar o hash:", err)
-    } else {
-        console.log("Hash gerado com sucesso:", hash)
-    }
-});
-
-// Depois de gerar o hash, insere o admin ao banco de dados
-db.query(
-    "INSERT INTO admins (nome, senha_hash) VALUES (?, ?)",
-    [NewAdmin.nome, senhaCriptografada],
-    (err) => {
-        if (err) {
-            console.error("Erro ao inserir o admin:", err);
-
-        } else {
-            console.log("Admin inseriro com sucesso ao banco de dados!")
-        }
-    }
-)
 
 
 // REQUISIÇÕES HTTP

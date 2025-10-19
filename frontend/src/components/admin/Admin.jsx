@@ -11,7 +11,7 @@ export default function Admin() {
             <div className="grid gap-6 w-150">
                 <button
                     onClick={() => navigate("/AdminGet")}
-                    className="bg-dourado text-white py-6 rounded-lg shadow hover:bg-dourado transition font-semibold"
+                    className="bg-verde text-white py-6 rounded-lg shadow hover:bg- transition font-semibold"
                 >
                     Ver produtos
                 </button>

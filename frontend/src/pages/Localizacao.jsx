@@ -1,11 +1,15 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer"
+import BackButton from "../components/BackButton";
+
 
 export default function Localizacao(){
     return(
         <>
         <Navbar />
+        <BackButton/>
+
         <section id="localizacao" className="p-8 bg-white text-center">
             <h2 className="text-2xl font-bold mb-4">Nossa Localização</h2>
             <p className="mb-4">Venha nos visitar! Estamos aqui:</p>
