@@ -1,58 +1,71 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function ProdutosRelacionados({ produtoId }) {
-  const [produtos, setProdutos] = useState([]);
-  const [carregando, setCarregando] = useState(true);
+    const [produtos, setProdutos] = useState([]);
 
-  useEffect(() => {
-    if (!produtoId) return;
+    useEffect(() => {
+        if (!produtoId) return;
 
-    fetch(`http://localhost:3000/produtos-relacionados/${produtoId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setProdutos(data);
-        } else {
-          console.warn("Resposta inesperada:", data);
-          setProdutos([]);
-        }
-        setCarregando(false);
-      })
-      .catch((err) => {
-        console.error("Erro ao buscar produtos relacionados:", err);
-        setCarregando(false);
-      });
-  }, [produtoId]);
+        const apiUrl = `http://localhost:3000/produtos-relacionados/${produtoId}`;
 
-  return (
-    <section className=" max-w-6xl mx-auto mt-12 px-4">
-      <h2 className="text-3xl font-bold mb-8 ml-3">Produtos Relacionados</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {produtos.map((p) => (
-          <Link
-            to={`/produto/${p.id}`}
-            key={p.id}
-            className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer overflow-hidden flex flex-col"
-          >
-            <img
-              src={`/images/${p.imagem}`}
-              alt={p.nome}
-              className="w-full h-48 object-cover rounded-t-xl"
-              loading="lazy"
-            />
-            <div className="p-4 flex flex-col flex-grow">
-              <h3 className="text-2xl font-semibold mb-1 text-gray-900 truncate">
-                {p.nome}
-              </h3>
-              <p className="text-gray-600 mb-3 capitalize">{p.categoria}</p>
-              <p className="text-verde font-bold text-lg mt-auto">
-                R$ {Number(p.preco).toFixed(2)}
-              </p>
+        axios.get(apiUrl)
+            .then(res => {
+                if (Array.isArray(res.data)) {
+                    setProdutos(res.data);
+                } else {
+                    setProdutos([]);
+                }
+            })
+            .catch(err => {
+                console.error("Erro ao buscar produtos relacionados:", err);
+                setProdutos([]);
+            });
+    }, [produtoId]);
+
+    if (produtos.length === 0) {
+        return null;
+    }
+
+    return (
+        <section className="w-full py-16">
+            <div className="max-w-6xl mx-auto px-4">
+                <h2 className="text-4xl font-serif text-VerdeMusgo text-center mb-10">
+                    Você também pode gostar
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {produtos.map((p) => (
+                        <div
+                            key={p.id}
+                            className="group bg-white rounded-lg shadow-md overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300"
+                        >
+                            <Link to={`/produto/${p.id}`} className="block overflow-hidden">
+                                <img
+                                    src={`/images/${p.imagem}`}
+                                    alt={p.nome}
+                                    className="w-full h-56 object-cover transition-transform duration-300"
+                                />
+                            </Link>
+
+                            <div className="p-4 flex flex-col flex-grow">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-1 flex-grow truncate">
+                                    {p.nome}
+                                </h3>
+                                <p className="text-xl text-VerdeMusgo font-bold my-3">
+                                    R$ {Number(p.preco).toFixed(2)}
+                                </p>
+                                <Link
+                                    to={`/produto/${p.id}`}
+                                    className="block text-center bg-white border border-VerdeMusgo text-VerdeMusgo w-full py-2 rounded-md font-semibold transition-colors duration-300 hover:bg-VerdeMusgo hover:text-white"
+                                >
+                                    Ver produto
+                                </Link>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
