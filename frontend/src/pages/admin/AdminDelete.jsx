@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../../components/admin/AdminNavbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 

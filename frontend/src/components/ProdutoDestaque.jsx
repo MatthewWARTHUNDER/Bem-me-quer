@@ -65,7 +65,7 @@ export default function ProdutoDestaque({ produtos }) {
                     "--swiper-pagination-color": "#ffffff",
                 }}
             >
-                {produtos.map((produto) => (
+                {produtos.slice(0, 8).map((produto) => (
                     <SwiperSlide key={produto.id}>
                         <Link
                             to={`/produto/${produto.id}`}

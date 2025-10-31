@@ -27,7 +27,7 @@ export default function AdminLogin() {
 
                 localStorage.setItem("token", data.token)
 
-                navigate("/AdminPanel");
+                navigate("/admin");
             } else {
 
                 setError(data.erro || "Erro ao fazer login");

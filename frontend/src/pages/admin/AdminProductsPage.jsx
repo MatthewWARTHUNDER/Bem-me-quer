@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import AdminNavbar from "./AdminNavbar";
-import BackToAdminPanelButton from "../admin/BackToAdminPanelButton";
+import AdminNavbar from "../../components/admin/AdminNavbar";
+import BackToAdminPanelButton from "../../components/admin/BackToAdminPanelButton";
 
-export default function AdminGet() {
+// Renomeado para corresponder ao nome do arquivo, que é uma boa prática.
+export default function AdminProductsPage() {
     const [produtos, setProdutos] = useState([]);
 
     useEffect(() => {
@@ -14,12 +15,28 @@ export default function AdminGet() {
             .catch((err) => console.error("Erro ao carregar produtos:", err));
     }, []);
 
+
+    const handleDelete = async (produtoId) => {
+
+        if (window.confirm('Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.')) {
+            try {
+                await axios.delete(`http://localhost:3000/produtos/${produtoId}`);
+            
+                setProdutos(produtos.filter(p => p.id !== produtoId));
+                alert('Produto excluído com sucesso!');
+            } catch (error) {
+                console.error("Erro ao excluir produto:", error);
+                alert('Erro ao excluir o produto.');
+            }
+        }
+    };
+
     return (
-        <div className="bg-gray-100 min-h-screen">
+        <div className="bg-CorDeFundo min-h-screen">
             <AdminNavbar />
             <main className="p-6 max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Gerenciar Produtos</h1>
+                    <h1 className="text-3xl font-serif text-VerdeMusgo">Gerenciar Produtos</h1>
                     <BackToAdminPanelButton />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -39,18 +56,20 @@ export default function AdminGet() {
                                 <p className="text-sm text-gray-600">Estoque: {p.estoque}</p>
 
                                 <div className="mt-auto flex gap-3 pt-4">
+                                    
                                     <Link
-                                        to={`/AdminPut/${p.id}`}
-                                        className="flex-1 text-center bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors font-semibold"
+                                        to={`/admin/produtos/editar/${p.id}`}
+                                        className="flex-1 text-center bg-VerdeMusgo text-white py-2 rounded-md hover:bg-opacity-90 transition-colors font-semibold"
                                     >
                                         Editar
                                     </Link>
-                                    <Link
-                                        to={`/AdminDelete/${p.id}`}
-                                        className="flex-1 text-center bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors font-semibold"
+                                    
+                                    <button
+                                        onClick={() => handleDelete(p.id)}
+                                        className="flex-1 text-center bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors font-semibold"
                                     >
                                         Deletar
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         </div>

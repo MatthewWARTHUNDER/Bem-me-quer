@@ -3,13 +3,23 @@ const cors = require('cors');
 const db = require('./db');
 const bcrypt = require('bcrypt');
 const path = require('path');
-const senha = "";
-const saltRounds = 10;
 const app = express();
-
+const multer = require('multer');
 app.use(express.json());
 app.use(cors());
 
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '..', 'frontend', 'public', 'images'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // REQUISIÇÕES HTTP
 
@@ -101,17 +111,23 @@ app.get('/produtos/:id', (req, res) => {
 });
 
 // Adicionar produto 
-app.post('/produtos', (req, res) => {
-    const { nome, descricao, preco, imagem, categoria, estoque } = req.body;
+app.post('/produtos', upload.single('imagem'), (req, res) => {
+    const { nome, descricao, preco, categoria, estoque } = req.body;
+    
+    if (!req.file) {
+        return res.status(400).send("Nenhuma imagem foi enviada.");
+    }
+    const imagem = req.file.filename;
 
     db.query(
         "INSERT INTO produtos (nome, descricao, preco, imagem, categoria, estoque) VALUES (?, ?, ?, ?, ?, ?)",
         [nome, descricao, preco, imagem, categoria, estoque],
         (err, results) => {
             if (err) {
+                console.error("Erro ao adicionar o produto:", err);
                 return res.status(500).send("Erro ao adicionar o produto: " + err.message);
             }
-            res.status(201).send('Produto adicionado com sucesso!');
+            res.status(201).send({ message: 'Produto adicionado com sucesso!'});
         }
     );
 });
@@ -207,6 +223,8 @@ app.delete('/produtos/:id', (req, res) => {
         });
     });
 });
+
+
 
 
 // Deletar pedido por ID

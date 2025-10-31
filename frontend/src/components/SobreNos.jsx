@@ -46,7 +46,7 @@ export default function SobreNos() {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                         <a
-                            href="https://wa.me/5541995035780"
+                            href="https://wa.me/555499179427"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center gap-2 bg-verde text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-transform duration-200 ease-in-out hover:scale-105"

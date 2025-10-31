@@ -5,9 +5,6 @@ import Carousel from './components/Carousel'
 import InstagramSection from './components/InstagramSection'
 import SectionLoja from './components/SectionLoja'
 import CookieConsent from './components/CookiesConsent'
-import Admin from './components/admin/Admin'
-import AdminLogin from './components/admin/AdminLogin'
-import AdminNavbar from './components/admin/AdminNavbar'
 import { useNavigate } from 'react-router-dom';
 import ProdutosDestaque from './components/ProdutoDestaque';
 import CarouselBuques from './components/CarouselBuques';
@@ -31,7 +28,7 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l') {
-        navigate('/AdminLoginPage');
+        navigate('/admin/login');
       }
     };
 

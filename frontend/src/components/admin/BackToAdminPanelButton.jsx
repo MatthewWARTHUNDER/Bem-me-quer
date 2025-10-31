@@ -5,7 +5,7 @@ export default function BackToAdminPanelButton() {
 
     return (
         <button
-            onClick={() => navigate('/AdminPanel')}
+            onClick={() => navigate('/admin')}
             className="flex items-center gap-2 bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md m-4 transition-transform hover:scale-105"
             aria-label="Voltar ao painel de administração"
         >

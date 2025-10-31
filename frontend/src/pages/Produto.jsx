@@ -107,7 +107,7 @@ export default function Produto() {
                                     <img src={mastercard} alt="Mastercard" className="h-12" />
                                 </div>
                                 <p className="text-center text-xs text-gray-500 mt-2">
-                                    <span className="font-semibold text-red-600">Atenção:</span> Pagamento com cartão somente na loja.<br />
+                                     <span className="font-semibold text-red-600">Atenção:</span> {/*Pagamento com cartão somente na loja.<br /> */}
                                     Taxa de entrega pode ser aplicada.
                                 </p>
                             </div>

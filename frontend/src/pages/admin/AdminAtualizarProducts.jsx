@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../../components/admin/AdminNavbar";
 import { Link } from "react-router-dom";
 
 export default function AdminPut() {
@@ -26,7 +26,7 @@ export default function AdminPut() {
         try {
             await axios.put(`http://localhost:3000/produtos/${id}`, produto);
             alert("Produto atualizado com sucesso!");
-            navigate("/AdminGet");
+            navigate("/admin/produtos");
         } catch (err) {
             console.error("Erro ao atualizar produto:", err);
             alert("Erro ao atualizar produto.");
@@ -98,13 +98,13 @@ export default function AdminPut() {
                     <div className="flex gap-4 mt-8">
                         <button
                             type="submit"
-                            className="flex-1 bg-blue-500 text-white font-bold py-3 rounded-lg hover:scale-105 transition-transform"
+                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-VerdeMusgo hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-VerdeMusgo disabled:bg-gray-400"
                         >
                             Salvar Alterações
                         </button>
                         <Link
-                            to="/AdminGet"
-                            className="flex-1 bg-gray-500 text-white font-bold py-3 rounded-lg hover:bg-gray-600 transition-colors text-center"
+                            to="/admin/produtos"
+                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
                         >
                             Cancelar
                         </Link>
